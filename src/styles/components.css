@@ -112,6 +112,16 @@
 .liquid-select__option:disabled { cursor: not-allowed; opacity: .42; }
 .liquid-select__empty { padding: 14px 10px; text-align: center; }
 
+.liquid-form { display: grid; gap: var(--liquid-space-4, 16px); }
+.liquid-form-item { display: grid; gap: 6px; min-width: 0; }
+.liquid-form-item__label { color: var(--liquid-ink-muted); font-size: .82rem; font-weight: 700; }
+.liquid-form-item.is-required .liquid-form-item__label span { color: var(--liquid-danger); }
+.liquid-form-item__control { min-width: 0; }
+.liquid-form-item__help, .liquid-form-item__message { min-height: 1em; margin: 0; font-size: .78rem; }
+.liquid-form-item__help { color: var(--liquid-ink-muted); }
+.liquid-form-item__message { color: var(--liquid-danger); }
+.liquid-form-item.is-invalid .liquid-input, .liquid-form-item.is-invalid .liquid-number-input, .liquid-form-item.is-invalid .liquid-select__trigger { border-color: var(--liquid-danger); }
+
 @media (prefers-reduced-transparency: reduce) {
   .liquid-glass__tint { opacity: 1; background: Canvas; }
   .liquid-glass__backdrop, .liquid-glass__refract { backdrop-filter: none; -webkit-backdrop-filter: none; }

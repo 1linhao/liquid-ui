@@ -1,5 +1,6 @@
 import { createMaterialController } from './material/index.js'
 import { createThemeController } from './theme/index.js'
+export { createFormController } from './forms/controller.js'
 
 export { createMaterialController, createThemeController }
 export { detectCapabilities, normalizeDescriptor } from './material/index.js'

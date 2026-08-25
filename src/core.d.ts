@@ -47,6 +47,28 @@ export const LIQUID_PALETTES: readonly LiquidPalette[]
 export const LIQUID_QUALITIES: readonly MaterialQuality[]
 export const LIQUID_SURFACES: readonly SurfaceIntent[]
 export function createLiquidRuntime(options?: Record<string, unknown>): LiquidRuntime
+export interface FormState {
+  readonly valid: boolean
+  readonly errors: Readonly<Record<string, readonly string[]>>
+}
+export type FormRule = {
+  required?: boolean
+  min?: number
+  max?: number
+  pattern?: RegExp
+  message?: string
+  validator?: (value: unknown, values: Record<string, unknown>, field: string) => boolean | string | void | Promise<boolean | string | void>
+} | ((value: unknown, values: Record<string, unknown>, field: string) => boolean | string | void | Promise<boolean | string | void>)
+export interface FormController {
+  getState(): FormState
+  validate(fields?: string | string[]): Promise<FormState>
+  validateField(field: string): Promise<readonly string[]>
+  clear(fields?: string | string[]): FormState
+  setRules(rules?: Record<string, FormRule | FormRule[]>): FormState
+  subscribe(listener: (state: FormState) => void): () => void
+  destroy(): void
+}
+export function createFormController(options: { getValues(): Record<string, unknown>; rules?: Record<string, FormRule | FormRule[]> }): FormController
 export function createThemeController(options?: Record<string, unknown>): LiquidRuntime['theme']
 export function createMaterialController(options?: Record<string, unknown>): LiquidRuntime['material']
 export function detectCapabilities(environment?: unknown): LiquidRuntime['material'] extends { getCapabilities(): infer T } ? T : never

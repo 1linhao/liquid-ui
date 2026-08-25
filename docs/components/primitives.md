@@ -47,3 +47,13 @@ read application state, Router, storage, or business services.
 Every component consumes semantic LiquidUI tokens. Fixed color literals remain
 confined to `tokens.css`; component CSS contains no business selector,
 `#app`, `!important`, or fixed color value.
+
+## LiquidForm / LiquidFormItem
+
+- `LiquidForm` receives a controlled `model` and declarative `rules`
+- rules support required, numeric/length min/max, pattern, and sync/async validators
+- `validate()`, `validateField()`, and `clearValidate()` expose validation through one Interface
+- async validation uses per-field versions so stale responses cannot overwrite current state
+- submit emits `submit(result, event)` only when valid and `invalid(result, event)` otherwise
+- reset clears validation and emits intent; it never mutates the host model
+- `LiquidFormItem` owns label, help text, error presentation, and blur validation
