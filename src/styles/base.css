@@ -1,0 +1,10 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { font-family: var(--liquid-font-sans); color: var(--liquid-ink); }
+button, input, textarea, select { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+:focus { outline: none; }
+:focus-visible { outline: 3px solid var(--liquid-focus); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto; transition-duration: .01ms; animation-duration: .01ms; animation-iteration-count: 1; }
+}
