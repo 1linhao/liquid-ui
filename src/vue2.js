@@ -3,14 +3,15 @@ import { LiquidGlassSurface } from './material/LiquidGlassSurface.js'
 import { LiquidButton } from './primitives/LiquidButton.js'
 import { LiquidInput } from './primitives/LiquidInput.js'
 import { LiquidNumberInput } from './primitives/LiquidNumberInput.js'
+import { LiquidSelect } from './primitives/LiquidSelect.js'
 import { LiquidSwitch } from './primitives/LiquidSwitch.js'
 import { LiquidTag } from './primitives/LiquidTag.js'
 
-export { LiquidButton, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSwitch, LiquidTag }
+export { LiquidButton, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSelect, LiquidSwitch, LiquidTag }
 
 export function createLiquidUI(options = {}) {
   const runtime = options.runtime ?? createLiquidRuntime(options)
-  const components = { LiquidButton, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSwitch, LiquidTag }
+  const components = { LiquidButton, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSelect, LiquidSwitch, LiquidTag }
 
   return {
     runtime,

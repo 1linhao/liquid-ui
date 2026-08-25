@@ -2,9 +2,11 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { LiquidInput } from '../src/primitives/LiquidInput.js'
 import { LiquidNumberInput } from '../src/primitives/LiquidNumberInput.js'
+import { LiquidSelect } from '../src/primitives/LiquidSelect.js'
 import { LiquidSwitch } from '../src/primitives/LiquidSwitch.js'
 import { LiquidTag } from '../src/primitives/LiquidTag.js'
 import { normalizeNumber, stepNumber } from '../src/primitives/number.js'
+import { filterOptions, nextEnabledIndex, normalizeOptions, toggleSelection } from '../src/primitives/select.js'
 
 function emitter(overrides = {}) {
   const events = []
@@ -55,4 +57,30 @@ test('closable tag emits no action while disabled', () => {
   const disabled = emitter({ disabled: true })
   LiquidTag.methods.close.call(disabled, { type: 'click' })
   assert.equal(disabled.events.length, 0)
+})
+
+test('select options are normalized, searchable, and keyboard navigation skips disabled values', () => {
+  const options = normalizeOptions([
+    { value: 'alpha', label: 'Alpha' },
+    { value: 'beta', label: 'Beta', disabled: true },
+    { value: 'gamma', label: 'Gamma' }
+  ])
+  assert.deepEqual(filterOptions(options, 'AM').map(({ value }) => value), ['gamma'])
+  assert.equal(nextEnabledIndex(options, 0, 1), 2)
+  assert.equal(nextEnabledIndex(options, 2, 1), 0)
+  assert.throws(() => normalizeOptions([{ value: 1 }, { value: 1 }]), /unique/)
+})
+
+test('select computes controlled single and multiple values without mutating input', () => {
+  assert.equal(toggleSelection('alpha', 'gamma', false), 'gamma')
+  const current = ['alpha']
+  assert.deepEqual(toggleSelection(current, 'gamma', true), ['alpha', 'gamma'])
+  assert.deepEqual(toggleSelection(current, 'alpha', true), [])
+  assert.deepEqual(current, ['alpha'])
+
+  const select = emitter({ value: current, multiple: true })
+  LiquidSelect.methods.emitValue.call(select, ['alpha', 'gamma'], { type: 'click' })
+  assert.deepEqual(select.events.map(([name, value]) => [name, value]), [
+    ['input', ['alpha', 'gamma']], ['change', ['alpha', 'gamma']]
+  ])
 })

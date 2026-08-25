@@ -1,6 +1,8 @@
 import { createLiquidRuntime } from './core.js'
 import { bindGlassSurface } from './material/surface.js'
 
+export { createAnchoredOverlay } from './overlays/anchored.js'
+
 const LAYERS = ['backdrop', 'refract', 'tint', 'specular']
 
 function appendContent(contentElement, content) {

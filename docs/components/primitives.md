@@ -29,6 +29,15 @@ read application state, Router, storage, or business services.
 - exposes `role="switch"` and `aria-checked`
 - emits `input(nextValue)` and `change(nextValue, event)`
 
+## LiquidSelect
+
+- controlled `value` with explicit `{ value, label, disabled? }[]` options
+- scalar single selection or array-based `multiple` selection
+- `clearable`, `filterable`, `disabled`, `invalid`, placeholder, and empty text
+- ArrowUp/ArrowDown skip disabled options; Enter/Space select; Escape closes
+- the overlay owns viewport positioning, outside dismissal, and focus restoration
+- emits `input(value)`, `change(value, event)`, `open`, `close(reason)`, `blur`, and `clear(event)`
+
 ## LiquidTag
 
 - tones: `neutral`, `accent`, `success`, `warning`, `danger`, `info`

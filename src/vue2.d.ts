@@ -10,5 +10,6 @@ export const LiquidButton: Record<string, unknown>
 export const LiquidGlassSurface: Record<string, unknown>
 export const LiquidInput: Record<string, unknown>
 export const LiquidNumberInput: Record<string, unknown>
+export const LiquidSelect: Record<string, unknown>
 export const LiquidSwitch: Record<string, unknown>
 export const LiquidTag: Record<string, unknown>
