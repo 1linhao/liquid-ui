@@ -13,4 +13,5 @@ test('Vue adapter installs only public LiquidUI components', () => {
     'LiquidButton', 'LiquidGlassSurface', 'LiquidInput', 'LiquidNumberInput', 'LiquidSwitch', 'LiquidTag'
   ])
   assert.equal(Vue.prototype.$liquidUI.material, liquidUI.material)
+  assert.equal(Vue.prototype.$liquidUI, liquidUI.runtime)
 })

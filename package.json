@@ -15,8 +15,23 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js"
+    },
+    "./dom": {
+      "types": "./dist/dom.d.ts",
+      "import": "./dist/dom.js"
+    },
+    "./vue2": {
+      "types": "./dist/vue2.d.ts",
+      "import": "./dist/vue2.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/styles/tokens.css",
+    "./styles/base.css": "./dist/styles/base.css",
+    "./styles/components.css": "./dist/styles/components.css",
+    "./styles/utilities.css": "./dist/styles/utilities.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -28,10 +43,15 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test",
-    "check": "npm run test && npm run build"
+    "check": "npm run test && npm run build && node scripts/check-exports.mjs"
   },
   "peerDependencies": {
     "vue": ">=2.6.0 <3"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=18"

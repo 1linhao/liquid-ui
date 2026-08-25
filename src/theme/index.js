@@ -19,9 +19,11 @@ function safeWrite(storage, key, value) {
 }
 
 export function createThemeController(options = {}) {
-  const root = options.document?.documentElement ?? globalThis.document?.documentElement
-  const media = options.matchMedia?.('(prefers-color-scheme: dark)') ??
-    globalThis.matchMedia?.('(prefers-color-scheme: dark)')
+  const root = Object.hasOwn(options, 'document')
+    ? options.document?.documentElement
+    : globalThis.document?.documentElement
+  const matchMedia = Object.hasOwn(options, 'matchMedia') ? options.matchMedia : globalThis.matchMedia
+  const media = matchMedia?.('(prefers-color-scheme: dark)')
   const storedPalette = safeRead(options.paletteStorage, STORAGE_KEY)
   let mode = MODES.has(options.initialMode) ? options.initialMode : 'system'
   let palette = PALETTES.has(storedPalette)
