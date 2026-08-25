@@ -28,7 +28,7 @@
   border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 65%, transparent);
   border-radius: var(--liquid-radius-control);
   background: color-mix(in srgb, var(--liquid-tint) 76%, transparent);
-  box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 8px 24px rgba(10, 15, 40, .12);
+  box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control);
   color: var(--liquid-ink);
   cursor: pointer;
   transition: transform var(--liquid-duration-fast) var(--liquid-ease-standard), background var(--liquid-duration-fast);
@@ -41,6 +41,50 @@
 .liquid-button--large { min-height: 50px; padding-inline: 26px; }
 .liquid-spinner { display: inline-block; width: 1em; height: 1em; margin-right: .5em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: liquid-spin .7s linear infinite; }
 @keyframes liquid-spin { to { transform: rotate(1turn); } }
+
+.liquid-input, .liquid-number-input {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent);
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--liquid-tint) 72%, transparent);
+  box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control);
+  color: var(--liquid-ink);
+  transition: border-color var(--liquid-duration-fast), box-shadow var(--liquid-duration-fast), background var(--liquid-duration-fast);
+}
+.liquid-input:focus-within, .liquid-number-input:focus-within { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); }
+.liquid-input.is-invalid, .liquid-number-input.is-invalid { border-color: var(--liquid-danger); }
+.liquid-input.is-disabled, .liquid-number-input.is-disabled { opacity: .5; }
+.liquid-input__control, .liquid-number-input__control { min-width: 0; flex: 1; height: 40px; padding: 0; border: 0; outline: 0; background: transparent; color: inherit; }
+.liquid-input__control::placeholder, .liquid-number-input__control::placeholder { color: var(--liquid-ink-muted); }
+.liquid-input__prefix, .liquid-input__suffix { display: inline-flex; color: var(--liquid-ink-muted); }
+.liquid-input__clear, .liquid-number-input__step { display: grid; place-items: center; border: 0; background: transparent; color: var(--liquid-ink-muted); cursor: pointer; }
+.liquid-input__clear { width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; }
+.liquid-input__clear:hover, .liquid-number-input__step:hover { background: color-mix(in srgb, var(--liquid-accent) 14%, transparent); color: var(--liquid-accent); }
+.liquid-number-input { padding-right: 5px; }
+.liquid-number-input__steps { display: grid; align-self: stretch; width: 30px; padding: 3px 0; }
+.liquid-number-input__step { min-height: 17px; border-radius: 8px; line-height: 1; }
+
+.liquid-switch { display: inline-flex; align-items: center; gap: 10px; padding: 0; border: 0; background: transparent; color: var(--liquid-ink); cursor: pointer; }
+.liquid-switch__thumb { position: relative; width: 48px; height: 28px; flex: 0 0 auto; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--liquid-ink-muted) 24%, var(--liquid-tint)); box-shadow: var(--liquid-control-inset-shadow); transition: background var(--liquid-duration-medium), border-color var(--liquid-duration-medium); }
+.liquid-switch__thumb::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--liquid-control-knob); box-shadow: var(--liquid-shadow-control-small), inset 0 1px 1px var(--liquid-control-knob-highlight); transition: transform var(--liquid-duration-medium) var(--liquid-ease-standard); }
+.liquid-switch.is-checked .liquid-switch__thumb { border-color: color-mix(in srgb, var(--liquid-accent) 68%, transparent); background: var(--liquid-accent); }
+.liquid-switch.is-checked .liquid-switch__thumb::after { transform: translateX(20px); }
+.liquid-switch:disabled { cursor: not-allowed; opacity: .48; }
+
+.liquid-tag { --liquid-tag-tone: var(--liquid-ink-muted); display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 9px; border: 1px solid color-mix(in srgb, var(--liquid-tag-tone) 30%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--liquid-tag-tone) 13%, var(--liquid-tint)); color: var(--liquid-tag-tone); font-size: .78rem; font-weight: 700; }
+.liquid-tag--accent { --liquid-tag-tone: var(--liquid-accent); }
+.liquid-tag--success { --liquid-tag-tone: var(--liquid-success); }
+.liquid-tag--warning { --liquid-tag-tone: var(--liquid-warning); }
+.liquid-tag--danger { --liquid-tag-tone: var(--liquid-danger); }
+.liquid-tag--info { --liquid-tag-tone: var(--liquid-info); }
+.liquid-tag__close { display: grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+.liquid-tag__close:hover { background: color-mix(in srgb, var(--liquid-tag-tone) 18%, transparent); }
+.liquid-tag.is-disabled { opacity: .48; }
 
 @media (prefers-reduced-transparency: reduce) {
   .liquid-glass__tint { opacity: 1; background: Canvas; }

@@ -32,3 +32,6 @@ Run `npm test` for contracts and `npm run build` to create the installable
 
 See [docs/baselines/README.md](docs/baselines/README.md) for the fixed visual
 and functional baselines.
+
+Component contracts are documented in
+[docs/components/primitives.md](docs/components/primitives.md).
