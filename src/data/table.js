@@ -12,7 +12,9 @@ export function normalizeColumns(columns = []) {
       minWidth: column.minWidth,
       align: ['left', 'center', 'right'].includes(column.align) ? column.align : 'left',
       sortable: Boolean(column.sortable),
-      format: typeof column.format === 'function' ? column.format : null
+      format: typeof column.format === 'function' ? column.format : null,
+      type: column.type || '',
+      slot: typeof column.slot === 'function' ? column.slot : null
     })
   })
 }

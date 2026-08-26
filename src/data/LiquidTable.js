@@ -5,6 +5,8 @@ export const LiquidTable = {
   props: {
     columns: { type: Array, default: () => [] },
     rows: { type: Array, default: () => [] },
+    data: { default: () => [] },
+    border: Boolean,
     rowKey: { type: [String, Function], default: 'id' },
     sort: { type: Object, default: () => ({ key: '', direction: 'none' }) },
     manualSort: Boolean,
@@ -17,11 +19,19 @@ export const LiquidTable = {
     normalizedColumns() {
       const columns = this.columns.length ? this.columns : (this.$slots.default ?? []).filter((node) => node.componentOptions?.Ctor?.options?.name === 'LiquidTableColumn').map((node) => {
         const props = node.componentOptions.propsData ?? {}
-        return { ...props, key: props.keyName || props.field, keyName: undefined, field: undefined }
+        return {
+          ...props,
+          key: props.keyName || props.field || props.prop || (props.type === 'index' ? '__index' : ''),
+          slot: node.data?.scopedSlots?.default,
+          keyName: undefined,
+          field: undefined,
+          prop: undefined
+        }
       })
       return normalizeColumns(columns)
     },
-    visibleRows() { return this.manualSort ? this.rows : stableSortRows(this.rows, this.sort) }
+    sourceRows() { return this.rows.length ? this.rows : Array.isArray(this.data) ? this.data : [] },
+    visibleRows() { return this.manualSort ? this.sourceRows : stableSortRows(this.sourceRows, this.sort) }
   },
   methods: {
     keyFor(row, index) { return typeof this.rowKey === 'function' ? this.rowKey(row, index) : row?.[this.rowKey] ?? index },
@@ -32,7 +42,8 @@ export const LiquidTable = {
       this.$emit('update:sort', sort)
     },
     cellValue(row, column, rowIndex) {
-      const value = row?.[column.key]
+      if (column.type === 'index') return rowIndex + 1
+      const value = String(column.key).split('.').reduce((current, part) => current?.[part], row)
       return column.format ? column.format(value, row, rowIndex) : value
     }
   },
@@ -46,12 +57,13 @@ export const LiquidTable = {
     }, column.sortable ? [h('button', { attrs: { type: 'button' }, on: { click: (event) => this.requestSort(column, event) } }, [column.label, h('span', { attrs: { 'aria-hidden': 'true' } }, this.sort.key === column.key ? (this.sort.direction === 'ascending' ? ' ↑' : this.sort.direction === 'descending' ? ' ↓' : '') : '')])] : column.label))
     const body = this.visibleRows.length
       ? this.visibleRows.map((row, rowIndex) => h('tr', { key: this.keyFor(row, rowIndex), on: { click: (event) => this.$emit('row-click', row, rowIndex, event) } }, this.normalizedColumns.map((column) => {
-        const slot = this.$scopedSlots[`cell-${column.key}`]
-        return h('td', { key: column.key, class: `is-${column.align}` }, slot ? slot({ value: row?.[column.key], row, rowIndex, column }) : String(this.cellValue(row, column, rowIndex) ?? ''))
+        const slot = column.slot || this.$scopedSlots[`cell-${column.key}`]
+        const value = this.cellValue(row, column, rowIndex)
+        return h('td', { key: column.key, class: `is-${column.align}` }, slot ? slot({ value, row, rowIndex, $index: rowIndex, column }) : String(value ?? ''))
       })))
-      : [h('tr', { class: 'liquid-table__empty-row' }, [h('td', { attrs: { colspan: this.normalizedColumns.length } }, this.emptyText)])]
+      : [h('tr', { class: 'liquid-table__empty-row' }, [h('td', { attrs: { colspan: Math.max(this.normalizedColumns.length, 1) } }, this.emptyText)])]
 
-    return h('div', { class: ['liquid-table', { 'is-loading': this.loading }] }, [
+    return h('div', { class: ['liquid-table', { 'is-loading': this.loading, 'is-bordered': this.border }] }, [
       h('div', { class: 'liquid-table__scroll', style }, [h('table', [this.caption ? h('caption', this.caption) : null, h('thead', [h('tr', headers)]), h('tbody', body)])]),
       this.loading ? h('div', { class: 'liquid-table__loading', attrs: { role: 'status', 'aria-label': 'Loading table' } }, [h('span', { class: 'liquid-spinner', attrs: { 'aria-hidden': 'true' } }), h('span', 'Loading')]) : null
     ])

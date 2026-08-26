@@ -54,3 +54,11 @@ test('form rule replacement clears obsolete errors', async () => {
   form.setRules({})
   assert.deepEqual(form.getState(), { valid: true, errors: {} })
 })
+
+test('form controller supports callback-style ecosystem validators', async () => {
+  const form = createFormController({
+    getValues: () => ({ code: 'bad' }),
+    rules: { code: { validator: (_rule, value, callback) => callback(value === 'good' ? undefined : new Error('Code is invalid')) } }
+  })
+  assert.deepEqual(await form.validateField('code'), ['Code is invalid'])
+})

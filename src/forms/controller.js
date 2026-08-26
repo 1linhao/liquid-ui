@@ -38,7 +38,21 @@ async function evaluateRule(ruleInput, value, values, field) {
     if (!rule.pattern.test(String(value))) return rule.message ?? defaultMessage(field, 'pattern')
   }
   if (!rule.validator) return null
-  const result = await rule.validator(value, values, field)
+  const result = rule.validator.length >= 3
+    ? await new Promise((resolve, reject) => {
+        let settled = false
+        const done = (error) => {
+          if (settled) return
+          settled = true
+          if (!error) resolve(undefined)
+          else resolve(error.message || String(error))
+        }
+        try {
+          const pending = rule.validator(rule, value, done, values)
+          if (pending?.then) pending.then(() => done()).catch(reject)
+        } catch (error) { reject(error) }
+      })
+    : await rule.validator(value, values, field)
   if (result === true || result === undefined || result === null) return null
   if (result === false) return rule.message ?? defaultMessage(field, 'validator')
   if (typeof result === 'string') return result

@@ -6,8 +6,8 @@ import { LiquidTable } from '../src/data/LiquidTable.js'
 test('table columns expose stable declarative contracts', () => {
   const columns = normalizeColumns([{ key: 'name', label: 'Name', sortable: true }, { key: 'count', align: 'right' }])
   assert.deepEqual(columns, [
-    { key: 'name', label: 'Name', width: undefined, minWidth: undefined, align: 'left', sortable: true, format: null },
-    { key: 'count', label: 'count', width: undefined, minWidth: undefined, align: 'right', sortable: false, format: null }
+    { key: 'name', label: 'Name', width: undefined, minWidth: undefined, align: 'left', sortable: true, format: null, type: '', slot: null },
+    { key: 'count', label: 'count', width: undefined, minWidth: undefined, align: 'right', sortable: false, format: null, type: '', slot: null }
   ])
   assert.throws(() => normalizeColumns([{ key: 'name' }, { key: 'name' }]), /unique/)
 })
@@ -24,4 +24,17 @@ test('table sort cycles and remains stable for equal values', () => {
 test('table accepts declarative LiquidTableColumn children', () => {
   const columns = LiquidTable.computed.normalizedColumns.call({ columns: [], $slots: { default: [{ componentOptions: { Ctor: { options: { name: 'LiquidTableColumn' } }, propsData: { field: 'name', label: 'Name', sortable: true } } }] } })
   assert.deepEqual(columns.map(({ key, label, sortable }) => ({ key, label, sortable })), [{ key: 'name', label: 'Name', sortable: true }])
+})
+
+test('table accepts data aliases, nested props, index columns, and scoped cells', () => {
+  const slot = ({ row }) => row.profile.name
+  const columns = LiquidTable.computed.normalizedColumns.call({ columns: [], $slots: { default: [
+    { data: {}, componentOptions: { Ctor: { options: { name: 'LiquidTableColumn' } }, propsData: { type: 'index', label: '#' } } },
+    { data: { scopedSlots: { default: slot } }, componentOptions: { Ctor: { options: { name: 'LiquidTableColumn' } }, propsData: { prop: 'profile.name', label: 'Name' } } }
+  ] } })
+  assert.deepEqual(columns.map(({ key, type, slot }) => ({ key, type, hasSlot: Boolean(slot) })), [
+    { key: '__index', type: 'index', hasSlot: false },
+    { key: 'profile.name', type: '', hasSlot: true }
+  ])
+  assert.equal(LiquidTable.methods.cellValue.call({}, { profile: { name: 'Ada' } }, columns[1], 0), 'Ada')
 })

@@ -5,6 +5,8 @@ export const LiquidForm = {
   props: {
     model: { type: Object, required: true },
     rules: { type: Object, default: () => ({}) },
+    labelWidth: { type: [String, Number], default: '' },
+    labelPosition: { type: String, default: 'right' },
     novalidate: { type: Boolean, default: true }
   },
   data() {
@@ -14,7 +16,12 @@ export const LiquidForm = {
   watch: { rules: { deep: true, handler(value) { this.controller.setRules(value) } } },
   beforeDestroy() { this.controller.destroy() },
   methods: {
-    validate(fields) { return this.controller.validate(fields) },
+    async validate(fields, callback) {
+      if (typeof fields === 'function') { callback = fields; fields = undefined }
+      const result = await this.controller.validate(fields)
+      callback?.(result.valid, result)
+      return result
+    },
     validateField(field) { return this.controller.validateField(field) },
     clearValidate(fields) { return this.controller.clear(fields) },
     async submit(event) {
