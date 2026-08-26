@@ -10,7 +10,7 @@ test('Vue adapter installs only public LiquidUI components', () => {
   const liquidUI = createLiquidUI({ matchMedia: () => ({ matches: false, addEventListener() {} }) })
   liquidUI.install(Vue)
   assert.deepEqual([...registered.keys()].sort(), [
-    'LiquidButton', 'LiquidForm', 'LiquidFormItem', 'LiquidGlassSurface', 'LiquidInput', 'LiquidNumberInput', 'LiquidSelect', 'LiquidSwitch', 'LiquidTag'
+    'LiquidButton', 'LiquidDatePicker', 'LiquidForm', 'LiquidFormItem', 'LiquidGlassSurface', 'LiquidInput', 'LiquidNumberInput', 'LiquidSelect', 'LiquidSwitch', 'LiquidTag'
   ])
   assert.equal(Vue.prototype.$liquidUI.material, liquidUI.material)
   assert.equal(Vue.prototype.$liquidUI, liquidUI.runtime)

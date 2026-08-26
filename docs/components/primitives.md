@@ -38,6 +38,16 @@ read application state, Router, storage, or business services.
 - the overlay owns viewport positioning, outside dismissal, and focus restoration
 - emits `input(value)`, `change(value, event)`, `open`, `close(reason)`, `blur`, and `clear(event)`
 
+## LiquidDatePicker
+
+- controlled timezone-safe `YYYY-MM-DD` value; it never serializes local midnight
+- `min`, `max`, and `disabledDate(isoDate)` constrain both pointer and keyboard selection
+- locale-aware labels and configurable first weekday
+- Arrow keys move by day/week, PageUp/PageDown by month, Home/End by week
+- manual ISO entry reports an inline error without emitting an invalid value
+- the calendar reuses the shared anchored Overlay and overlay material
+- emits `input(value)`, `change(value, event)`, `open`, `close(reason)`, `blur`, and `clear(event)`
+
 ## LiquidTag
 
 - tones: `neutral`, `accent`, `success`, `warning`, `danger`, `info`

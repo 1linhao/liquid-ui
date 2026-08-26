@@ -69,10 +69,10 @@ export function createAnchoredOverlay(options = {}) {
     if (open) return false
     open = true
     panel.hidden = false
-    updatePosition()
     if (panel.showPopover) {
       try { panel.showPopover() } catch { /* already promoted or unsupported */ }
     }
+    updatePosition()
     document.addEventListener('pointerdown', onPointerDown, true)
     document.addEventListener('keydown', onKeyDown, true)
     environment.addEventListener('resize', updatePosition)
