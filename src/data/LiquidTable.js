@@ -3,7 +3,7 @@ import { normalizeColumns, nextSort, stableSortRows } from './table.js'
 export const LiquidTable = {
   name: 'LiquidTable',
   props: {
-    columns: { type: Array, required: true },
+    columns: { type: Array, default: () => [] },
     rows: { type: Array, default: () => [] },
     rowKey: { type: [String, Function], default: 'id' },
     sort: { type: Object, default: () => ({ key: '', direction: 'none' }) },
@@ -14,7 +14,13 @@ export const LiquidTable = {
     maxHeight: { type: [String, Number], default: '' }
   },
   computed: {
-    normalizedColumns() { return normalizeColumns(this.columns) },
+    normalizedColumns() {
+      const columns = this.columns.length ? this.columns : (this.$slots.default ?? []).filter((node) => node.componentOptions?.Ctor?.options?.name === 'LiquidTableColumn').map((node) => {
+        const props = node.componentOptions.propsData ?? {}
+        return { ...props, key: props.keyName || props.field, keyName: undefined, field: undefined }
+      })
+      return normalizeColumns(columns)
+    },
     visibleRows() { return this.manualSort ? this.rows : stableSortRows(this.rows, this.sort) }
   },
   methods: {

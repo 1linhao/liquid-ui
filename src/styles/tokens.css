@@ -17,6 +17,10 @@
   --liquid-control-knob: #fff;
   --liquid-control-knob-highlight: rgba(255, 255, 255, .8);
   --liquid-accent: #2478ff;
+  --liquid-palette-blue: #2478ff;
+  --liquid-palette-violet: #7c55e8;
+  --liquid-palette-emerald: #078968;
+  --liquid-palette-amber: #b96508;
   --liquid-on-accent: #fff;
   --liquid-danger: #c9363d;
   --liquid-success: #078968;

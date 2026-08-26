@@ -10,7 +10,7 @@ test('Vue adapter installs only public LiquidUI components', () => {
   const liquidUI = createLiquidUI({ matchMedia: () => ({ matches: false, addEventListener() {} }) })
   liquidUI.install(Vue)
   assert.deepEqual([...registered.keys()].sort(), [
-    'LiquidButton', 'LiquidDatePicker', 'LiquidDialog', 'LiquidDropdown', 'LiquidFeedbackHost', 'LiquidForm', 'LiquidFormItem', 'LiquidGlassSurface', 'LiquidInput', 'LiquidNumberInput', 'LiquidPopover', 'LiquidSelect', 'LiquidSwitch', 'LiquidTable', 'LiquidTag', 'LiquidTooltip'
+    'LiquidBadge', 'LiquidBreadcrumb', 'LiquidButton', 'LiquidCard', 'LiquidCol', 'LiquidDatePicker', 'LiquidDescriptions', 'LiquidDialog', 'LiquidDrawer', 'LiquidDropdown', 'LiquidFeedbackHost', 'LiquidForm', 'LiquidFormItem', 'LiquidGlassSurface', 'LiquidIcon', 'LiquidIconButton', 'LiquidInput', 'LiquidLoading', 'LiquidMenu', 'LiquidMeter', 'LiquidNavIcon', 'LiquidNumberInput', 'LiquidPalettePicker', 'LiquidPopover', 'LiquidProgress', 'LiquidRow', 'LiquidScrollArea', 'LiquidSegmented', 'LiquidSelect', 'LiquidSpinner', 'LiquidSwitch', 'LiquidTable', 'LiquidTableColumn', 'LiquidTag', 'LiquidTextarea', 'LiquidThemeToggle', 'LiquidTooltip'
   ])
   assert.equal(Vue.prototype.$liquidUI.material, liquidUI.material)
   assert.equal(Vue.prototype.$liquidUI, liquidUI.runtime)

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { nextSort, normalizeColumns, stableSortRows } from '../src/data/table.js'
+import { LiquidTable } from '../src/data/LiquidTable.js'
 
 test('table columns expose stable declarative contracts', () => {
   const columns = normalizeColumns([{ key: 'name', label: 'Name', sortable: true }, { key: 'count', align: 'right' }])
@@ -18,4 +19,9 @@ test('table sort cycles and remains stable for equal values', () => {
   const rows = [{ id: 1, score: 2 }, { id: 2, score: 1 }, { id: 3, score: 2 }]
   assert.deepEqual(stableSortRows(rows, { key: 'score', direction: 'ascending' }).map(({ id }) => id), [2, 1, 3])
   assert.deepEqual(rows.map(({ id }) => id), [1, 2, 3])
+})
+
+test('table accepts declarative LiquidTableColumn children', () => {
+  const columns = LiquidTable.computed.normalizedColumns.call({ columns: [], $slots: { default: [{ componentOptions: { Ctor: { options: { name: 'LiquidTableColumn' } }, propsData: { field: 'name', label: 'Name', sortable: true } } }] } })
+  assert.deepEqual(columns.map(({ key, label, sortable }) => ({ key, label, sortable })), [{ key: 'name', label: 'Name', sortable: true }])
 })
