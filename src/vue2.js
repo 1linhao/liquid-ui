@@ -2,6 +2,7 @@ import { createLiquidRuntime } from './core.js'
 import { LiquidGlassSurface } from './material/LiquidGlassSurface.js'
 import { LiquidForm } from './forms/LiquidForm.js'
 import { LiquidFormItem } from './forms/LiquidFormItem.js'
+import { LiquidDialog } from './overlays/LiquidDialog.js'
 import { LiquidButton } from './primitives/LiquidButton.js'
 import { LiquidDatePicker } from './primitives/LiquidDatePicker.js'
 import { LiquidInput } from './primitives/LiquidInput.js'
@@ -10,11 +11,11 @@ import { LiquidSelect } from './primitives/LiquidSelect.js'
 import { LiquidSwitch } from './primitives/LiquidSwitch.js'
 import { LiquidTag } from './primitives/LiquidTag.js'
 
-export { LiquidButton, LiquidDatePicker, LiquidForm, LiquidFormItem, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSelect, LiquidSwitch, LiquidTag }
+export { LiquidButton, LiquidDatePicker, LiquidDialog, LiquidForm, LiquidFormItem, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSelect, LiquidSwitch, LiquidTag }
 
 export function createLiquidUI(options = {}) {
   const runtime = options.runtime ?? createLiquidRuntime(options)
-  const components = { LiquidButton, LiquidDatePicker, LiquidForm, LiquidFormItem, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSelect, LiquidSwitch, LiquidTag }
+  const components = { LiquidButton, LiquidDatePicker, LiquidDialog, LiquidForm, LiquidFormItem, LiquidGlassSurface, LiquidInput, LiquidNumberInput, LiquidSelect, LiquidSwitch, LiquidTag }
 
   return {
     runtime,

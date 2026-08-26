@@ -8,6 +8,7 @@ export interface LiquidUIPlugin extends LiquidRuntime {
 export function createLiquidUI(options?: Record<string, unknown> & { runtime?: LiquidRuntime }): LiquidUIPlugin
 export const LiquidButton: Record<string, unknown>
 export const LiquidDatePicker: Record<string, unknown>
+export const LiquidDialog: Record<string, unknown>
 export const LiquidForm: Record<string, unknown>
 export const LiquidFormItem: Record<string, unknown>
 export const LiquidGlassSurface: Record<string, unknown>

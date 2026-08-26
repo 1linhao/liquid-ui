@@ -20,6 +20,22 @@ export function createAnchoredOverlay(options: {
   onDismiss?: (reason: string) => void
 }): AnchoredOverlay
 
+export interface ModalLayer {
+  open(): boolean
+  close(options?: { restoreFocus?: boolean; reason?: string }): boolean
+  isOpen(): boolean
+  destroy(): void
+}
+export function createModalLayer(options: {
+  dialog: HTMLDialogElement | HTMLElement
+  document?: Document
+  returnFocus?: HTMLElement
+  initialFocus?: HTMLElement | (() => HTMLElement | null)
+  closeOnBackdrop?: boolean
+  closeOnEscape?: boolean
+  onDismiss?: (reason: string) => void
+}): ModalLayer
+
 export interface LiquidSurfaceHandle {
   readonly element: HTMLElement
   readonly contentElement: HTMLElement

@@ -2,6 +2,7 @@ import { createLiquidRuntime } from './core.js'
 import { bindGlassSurface } from './material/surface.js'
 
 export { createAnchoredOverlay } from './overlays/anchored.js'
+export { createModalLayer } from './overlays/modal.js'
 
 const LAYERS = ['backdrop', 'refract', 'tint', 'specular']
 
