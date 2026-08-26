@@ -6,9 +6,11 @@ export const LiquidDatePicker = {
   name: 'LiquidDatePicker',
   inheritAttrs: false,
   props: {
-    value: { type: String, default: '' },
-    min: { type: String, default: '' },
-    max: { type: String, default: '' },
+    value: { type: [String, Number, Date], default: '' },
+    type: { type: String, default: 'date', validator: (value) => ['date', 'month', 'datetime'].includes(value) },
+    valueFormat: { type: String, default: '' },
+    min: { type: [String, Number, Date], default: '' },
+    max: { type: [String, Number, Date], default: '' },
     disabledDate: { type: Function, default: null },
     locale: { type: String, default: undefined },
     weekStartsOn: { type: Number, default: 1 },
@@ -20,7 +22,7 @@ export const LiquidDatePicker = {
   data() {
     const today = dateToParts(new Date())
     const selected = parseISODate(this.value)
-    return { open: false, view: selected ?? today, active: selected ?? today, manualText: this.value, manualError: false }
+    return { open: false, view: selected ?? today, active: selected ?? today, manualText: typeof this.value === 'string' ? this.value : '', manualError: false }
   },
   computed: {
     selected() { return parseISODate(this.value) },
@@ -35,6 +37,7 @@ export const LiquidDatePicker = {
     }
   },
   mounted() {
+    if (this.type !== 'date') return
     this.overlay = createAnchoredOverlay({
       anchor: this.$refs.trigger,
       panel: this.$refs.panel,
@@ -136,9 +139,51 @@ export const LiquidDatePicker = {
     chooseToday(event) {
       const today = dateToParts(new Date())
       if (!isDateUnavailable(today, this)) this.choose(today, event)
+    },
+    temporalInputValue() {
+      if (this.value === '' || this.value === null || this.value === undefined) return ''
+      if (this.type === 'month') return String(this.value).slice(0, 7)
+      const date = this.value instanceof Date
+        ? this.value
+        : this.valueFormat === 'timestamp' || typeof this.value === 'number' ? new Date(Number(this.value)) : new Date(String(this.value).replace(' ', 'T'))
+      if (Number.isNaN(date.getTime())) return ''
+      const pad = (part) => String(part).padStart(2, '0')
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+    },
+    normalizeTemporalValue(raw) {
+      let value = raw
+      if (this.type === 'datetime' && raw) {
+        if (this.valueFormat === 'timestamp') value = new Date(raw).getTime()
+        else if (this.valueFormat === 'yyyy-MM-dd HH:mm') value = raw.replace('T', ' ')
+      }
+      return value
+    },
+    emitTemporalValue(raw, event) {
+      this.$emit('input', this.normalizeTemporalValue(raw))
+      if (!raw) this.$emit('clear', event)
+    },
+    renderTemporal(h) {
+      const inputType = this.type === 'month' ? 'month' : 'datetime-local'
+      const temporalMin = this.min ? (this.type === 'month' ? String(this.min).slice(0, 7) : String(this.min).replace(' ', 'T')) : undefined
+      const temporalMax = this.max ? (this.type === 'month' ? String(this.max).slice(0, 7) : String(this.max).replace(' ', 'T')) : undefined
+      return h('label', { class: ['liquid-date-picker', 'liquid-date-picker--native', { 'is-disabled': this.disabled, 'is-invalid': this.invalid }] }, [
+        h('span', { class: 'liquid-date-picker__native-icon', attrs: { 'aria-hidden': 'true' } }, '▣'),
+        h('input', {
+          class: 'liquid-date-picker__native',
+          attrs: { ...this.$attrs, type: inputType, disabled: this.disabled, min: temporalMin, max: temporalMax, 'aria-invalid': String(this.invalid) },
+          domProps: { value: this.temporalInputValue() },
+          on: {
+            input: (event) => this.emitTemporalValue(event.target.value, event),
+            change: (event) => this.$emit('change', this.normalizeTemporalValue(event.target.value), event),
+            focus: (event) => this.$emit('focus', event),
+            blur: (event) => this.$emit('blur', event)
+          }
+        })
+      ])
     }
   },
   render(h) {
+    if (this.type !== 'date') return this.renderTemporal(h)
     const selectedValue = this.selected ? toISODate(this.selected) : ''
     const days = this.cells.map((cell) => h('button', {
       key: cell.value,

@@ -4,7 +4,8 @@ export const LiquidButton = {
   props: {
     disabled: Boolean,
     loading: Boolean,
-    tone: { type: String, default: 'accent' },
+    icon: { type: String, default: '' },
+    tone: { type: String, default: 'neutral' },
     size: { type: String, default: 'medium' },
     type: { type: String, default: 'button' }
   },
@@ -21,6 +22,7 @@ export const LiquidButton = {
       on: { click: this.activate }
     }, [
       this.loading ? h('span', { class: 'liquid-spinner', attrs: { 'aria-hidden': 'true' } }) : null,
+      !this.loading && this.icon ? h('span', { class: ['liquid-button__icon', this.icon], attrs: { 'aria-hidden': 'true' } }) : null,
       h('span', { class: 'liquid-button__label' }, this.$slots.default)
     ])
   }

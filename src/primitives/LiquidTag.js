@@ -9,6 +9,7 @@ export const LiquidTag = {
       default: 'neutral',
       validator: (value) => TONES.has(value)
     },
+    type: { type: String, default: '', validator: (value) => !value || TONES.has(value) },
     closable: Boolean,
     disabled: Boolean
   },
@@ -18,8 +19,9 @@ export const LiquidTag = {
     }
   },
   render(h) {
+    const tone = this.type || this.tone
     return h('span', {
-      class: ['liquid-tag', `liquid-tag--${this.tone}`, { 'is-disabled': this.disabled }],
+      class: ['liquid-tag', `liquid-tag--${tone}`, { 'is-disabled': this.disabled }],
       attrs: this.$attrs
     }, [
       h('span', { class: 'liquid-tag__label' }, this.$slots.default),

@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { LiquidInput } from '../src/primitives/LiquidInput.js'
+import { LiquidDatePicker } from '../src/primitives/LiquidDatePicker.js'
 import { LiquidNumberInput } from '../src/primitives/LiquidNumberInput.js'
-import { LiquidSelect } from '../src/primitives/LiquidSelect.js'
+import { LiquidSelect, optionsFromVNodes } from '../src/primitives/LiquidSelect.js'
 import { LiquidSwitch } from '../src/primitives/LiquidSwitch.js'
 import { LiquidTag } from '../src/primitives/LiquidTag.js'
 import { normalizeNumber, stepNumber } from '../src/primitives/number.js'
@@ -41,11 +42,21 @@ test('number input reports the rejected draft and restores controlled state', ()
   assert.deepEqual(numberInput.events[0], ['invalid', 'invalid'])
 })
 
+test('temporal picker keeps month values and converts timestamp values', () => {
+  const month = { type: 'month', value: '2026-08', valueFormat: '' }
+  assert.equal(LiquidDatePicker.methods.temporalInputValue.call(month), '2026-08')
+  const datetime = { type: 'datetime', valueFormat: 'timestamp' }
+  assert.equal(
+    LiquidDatePicker.methods.normalizeTemporalValue.call(datetime, '2026-08-26T10:30'),
+    new Date('2026-08-26T10:30').getTime()
+  )
+})
+
 test('switch emits one controlled toggle and respects disabled', () => {
-  const enabled = emitter({ value: false, disabled: false })
+  const enabled = emitter({ value: 0, activeValue: 1, inactiveValue: 0, checked: false, disabled: false })
   LiquidSwitch.methods.toggle.call(enabled, { type: 'click' })
-  assert.deepEqual(enabled.events.map(([name, value]) => [name, value]), [['input', true], ['change', true]])
-  const disabled = emitter({ value: false, disabled: true })
+  assert.deepEqual(enabled.events.map(([name, value]) => [name, value]), [['input', 1], ['change', 1]])
+  const disabled = emitter({ value: false, activeValue: true, inactiveValue: false, checked: false, disabled: true })
   LiquidSwitch.methods.toggle.call(disabled, { type: 'click' })
   assert.equal(disabled.events.length, 0)
 })
@@ -69,6 +80,17 @@ test('select options are normalized, searchable, and keyboard navigation skips d
   assert.equal(nextEnabledIndex(options, 0, 1), 2)
   assert.equal(nextEnabledIndex(options, 2, 1), 0)
   assert.throws(() => normalizeOptions([{ value: 1 }, { value: 1 }]), /unique/)
+})
+
+test('select accepts native option VNodes without coercing bound values', () => {
+  const options = optionsFromVNodes([
+    { tag: 'option', data: { domProps: { value: 2 } }, children: [{ text: 'Two' }] },
+    { tag: 'optgroup', children: [{ tag: 'option', data: { attrs: { value: 'three', disabled: true } }, children: [{ text: 'Three' }] }] }
+  ])
+  assert.deepEqual(options, [
+    { value: 2, label: 'Two', disabled: false },
+    { value: 'three', label: 'Three', disabled: true }
+  ])
 })
 
 test('select computes controlled single and multiple values without mutating input', () => {

@@ -6,6 +6,35 @@ function hasValue(value, multiple) {
   return multiple ? Array.isArray(value) && value.length > 0 : value !== '' && value !== null && value !== undefined
 }
 
+function vnodeText(node) {
+  if (!node) return ''
+  if (node.text != null) return String(node.text)
+  return (node.children ?? []).map(vnodeText).join('')
+}
+
+export function optionsFromVNodes(nodes = []) {
+  const options = []
+  const visit = (node) => {
+    if (!node) return
+    if (node.tag === 'option') {
+      const attrs = node.data?.attrs ?? {}
+      const domProps = node.data?.domProps ?? {}
+      const value = Object.prototype.hasOwnProperty.call(domProps, 'value')
+        ? domProps.value
+        : Object.prototype.hasOwnProperty.call(attrs, 'value') ? attrs.value : vnodeText(node).trim()
+      options.push({
+        value,
+        label: attrs.label == null ? vnodeText(node).trim() : String(attrs.label),
+        disabled: Boolean(domProps.disabled ?? attrs.disabled)
+      })
+      return
+    }
+    ;(node.children ?? []).forEach(visit)
+  }
+  nodes.forEach(visit)
+  return options
+}
+
 export const LiquidSelect = {
   name: 'LiquidSelect',
   inheritAttrs: false,
@@ -22,7 +51,10 @@ export const LiquidSelect = {
   },
   data: () => ({ open: false, query: '', activeIndex: -1 }),
   computed: {
-    normalizedOptions() { return normalizeOptions(this.options) },
+    normalizedOptions() {
+      const source = this.options.length ? this.options : optionsFromVNodes(this.$slots.default)
+      return normalizeOptions(source)
+    },
     visibleOptions() { return filterOptions(this.normalizedOptions, this.query) },
     hasSelection() { return hasValue(this.value, this.multiple) },
     selectedLabel() {

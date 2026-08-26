@@ -123,6 +123,12 @@
 .liquid-form-item.is-invalid .liquid-input, .liquid-form-item.is-invalid .liquid-number-input, .liquid-form-item.is-invalid .liquid-select__trigger { border-color: var(--liquid-danger); }
 
 .liquid-date-picker { position: relative; width: 100%; min-width: 0; }
+.liquid-date-picker--native { box-sizing: border-box; display: flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control); color: var(--liquid-ink); }
+.liquid-date-picker--native:focus-within { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); }
+.liquid-date-picker--native.is-invalid { border-color: var(--liquid-danger); }
+.liquid-date-picker__native { min-width: 0; flex: 1; height: 40px; padding: 0; border: 0; outline: 0; background: transparent; color: inherit; font: inherit; color-scheme: light; }
+[data-liquid-mode="dark"] .liquid-date-picker__native { color-scheme: dark; }
+.liquid-date-picker__native-icon { color: var(--liquid-ink-muted); }
 .liquid-date-picker__trigger { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control); color: var(--liquid-ink); font: inherit; text-align: left; cursor: pointer; }
 .liquid-date-picker__trigger > span:nth-child(2) { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .liquid-date-picker__trigger .is-placeholder { color: var(--liquid-ink-muted); }

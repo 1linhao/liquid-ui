@@ -1,3 +1,5 @@
+import { LiquidTextarea } from './LiquidTextarea.js'
+
 export const LiquidInput = {
   name: 'LiquidInput',
   inheritAttrs: false,
@@ -27,6 +29,18 @@ export const LiquidInput = {
     }
   },
   render(h) {
+    if (this.type === 'textarea') {
+      return h(LiquidTextarea, {
+        attrs: this.$attrs,
+        props: { value: this.value, disabled: this.disabled, readonly: this.readonly, invalid: this.invalid, rows: Number(this.$attrs.rows) || 3 },
+        on: {
+          input: (value) => this.$emit('input', value),
+          change: (value, event) => this.$emit('change', value, event),
+          focus: (event) => this.$emit('focus', event),
+          blur: (event) => this.$emit('blur', event)
+        }
+      })
+    }
     const hasValue = String(this.value ?? '').length > 0
     return h('label', {
       class: ['liquid-input', { 'is-disabled': this.disabled, 'is-invalid': this.invalid }]
