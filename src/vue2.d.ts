@@ -18,5 +18,6 @@ export const LiquidNumberInput: Record<string, unknown>
 export const LiquidPopover: Record<string, unknown>
 export const LiquidSelect: Record<string, unknown>
 export const LiquidSwitch: Record<string, unknown>
+export const LiquidTable: Record<string, unknown>
 export const LiquidTag: Record<string, unknown>
 export const LiquidTooltip: Record<string, unknown>
