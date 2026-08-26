@@ -17,8 +17,8 @@ export function bindGlassSurface(root, descriptorInput, materialController) {
   let disposed = false
 
   const tier = materialController.resolveTier(descriptor)
-  root.classList.remove('liquid-glass--clear', 'liquid-glass--frost', 'liquid-glass--refract')
-  root.classList.add(`liquid-glass--${tier}`)
+  root.classList.remove('liqui-glass--clear', 'liqui-glass--frost', 'liqui-glass--refract')
+  root.classList.add(`liqui-glass--${tier}`)
   root.style.setProperty('--liquid-radius', `${descriptor.radius}px`)
   tint.style.opacity = tier === 'clear' ? '1' : String(0.25 + 0.75 * descriptor.frost)
   const effectiveBlur = descriptor.blur + descriptor.frost * 14
@@ -32,15 +32,15 @@ export function bindGlassSurface(root, descriptorInput, materialController) {
       specular.style.backgroundImage = `url(${entry.images.specular})`
       specular.style.opacity = String(descriptor.specular)
       if (entry.cold) {
-        refract.classList.add('liquid-glass__refract--fade')
-        specular.classList.add('liquid-glass__specular--fade')
+        refract.classList.add('liqui-glass__refract--fade')
+        specular.classList.add('liqui-glass__specular--fade')
         setTimeout(() => {
-          refract.classList.remove('liquid-glass__refract--fade')
-          specular.classList.remove('liquid-glass__specular--fade')
+          refract.classList.remove('liqui-glass__refract--fade')
+          specular.classList.remove('liqui-glass__specular--fade')
         }, 250)
       }
     } catch {
-      root.classList.replace('liquid-glass--refract', 'liquid-glass--frost')
+      root.classList.replace('liqui-glass--refract', 'liqui-glass--frost')
       setFilterStyle(backdrop, `blur(${Math.max(effectiveBlur * 2, 10)}px) saturate(${descriptor.saturation})`)
     }
   }

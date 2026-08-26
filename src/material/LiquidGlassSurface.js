@@ -32,16 +32,16 @@ export const LiquidGlassSurface = {
   render(h) {
     return h('div', {
       ref: 'surface',
-      class: ['liquid-glass', { 'liquid-glass--elevated': this.elevated }],
+      class: ['liqui-glass', { 'liqui-glass--elevated': this.elevated }],
       attrs: this.$attrs,
       on: this.$listeners
     }, [
-      h('span', { class: 'liquid-glass__backdrop', attrs: { 'data-liquid-layer': 'backdrop', 'aria-hidden': 'true' } }),
-      h('span', { class: 'liquid-glass__refract', attrs: { 'data-liquid-layer': 'refract', 'aria-hidden': 'true' } }),
-      h('span', { class: 'liquid-glass__tint', attrs: { 'data-liquid-layer': 'tint', 'aria-hidden': 'true' } }),
-      h('span', { class: 'liquid-glass__specular', attrs: { 'data-liquid-layer': 'specular', 'aria-hidden': 'true' } }),
-      h('span', { class: 'liquid-glass__shine', attrs: { 'aria-hidden': 'true' } }),
-      h('div', { class: 'liquid-glass__content' }, this.$slots.default)
+      h('span', { class: 'liqui-glass__backdrop', attrs: { 'data-liquid-layer': 'backdrop', 'aria-hidden': 'true' } }),
+      h('span', { class: 'liqui-glass__refract', attrs: { 'data-liquid-layer': 'refract', 'aria-hidden': 'true' } }),
+      h('span', { class: 'liqui-glass__tint', attrs: { 'data-liquid-layer': 'tint', 'aria-hidden': 'true' } }),
+      h('span', { class: 'liqui-glass__specular', attrs: { 'data-liquid-layer': 'specular', 'aria-hidden': 'true' } }),
+      h('span', { class: 'liqui-glass__shine', attrs: { 'aria-hidden': 'true' } }),
+      h('div', { class: 'liqui-glass__content' }, this.$slots.default)
     ])
   }
 }

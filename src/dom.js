@@ -25,7 +25,7 @@ function appendContent(contentElement, content) {
 
 function createLayer(document, name) {
   const layer = document.createElement('span')
-  layer.className = `liquid-glass__${name}`
+  layer.className = `liqui-glass__${name}`
   layer.setAttribute('data-liquid-layer', name)
   layer.setAttribute('aria-hidden', 'true')
   return layer
@@ -38,13 +38,13 @@ export function createLiquidSurface(options = {}) {
   if (!runtime?.material?.resolveTier) throw new TypeError('createLiquidSurface requires a Liquid runtime')
 
   const element = document.createElement(options.tagName ?? 'div')
-  element.className = ['liquid-glass', options.className].filter(Boolean).join(' ')
+  element.className = ['liqui-glass', options.className].filter(Boolean).join(' ')
   const layers = LAYERS.map((name) => createLayer(document, name))
   const shine = document.createElement('span')
-  shine.className = 'liquid-glass__shine'
+  shine.className = 'liqui-glass__shine'
   shine.setAttribute('aria-hidden', 'true')
   const contentElement = document.createElement('div')
-  contentElement.className = 'liquid-glass__content'
+  contentElement.className = 'liqui-glass__content'
   layers.forEach((layer) => element.appendChild(layer))
   element.appendChild(shine)
   element.appendChild(contentElement)
@@ -56,7 +56,7 @@ export function createLiquidSurface(options = {}) {
   const bind = () => {
     if (destroyed) return
     releaseBinding?.()
-    element.classList.toggle('liquid-glass--elevated', Boolean(descriptor.elevated))
+    element.classList.toggle('liqui-glass--elevated', Boolean(descriptor.elevated))
     releaseBinding = bindGlassSurface(element, descriptor, runtime.material)
   }
   const releaseQuality = runtime.material.subscribe(bind)

@@ -65,12 +65,12 @@ test('DOM adapter hides surface anatomy and lifecycle behind one handle', () => 
 
   assert.equal(surface.element.children.length, 6)
   assert.equal(surface.contentElement.children[0], 'Hello from vanilla')
-  assert.equal(surface.element.classList.contains('liquid-glass--frost'), true)
-  assert.equal(surface.element.classList.contains('liquid-glass--elevated'), true)
+  assert.equal(surface.element.classList.contains('liqui-glass--frost'), true)
+  assert.equal(surface.element.classList.contains('liqui-glass--elevated'), true)
 
   surface.update({ material: 'clear', elevated: false })
-  assert.equal(surface.element.classList.contains('liquid-glass--clear'), true)
-  assert.equal(surface.element.classList.contains('liquid-glass--elevated'), false)
+  assert.equal(surface.element.classList.contains('liqui-glass--clear'), true)
+  assert.equal(surface.element.classList.contains('liqui-glass--elevated'), false)
 
   surface.destroy()
   assert.equal(surface.element.removed, true)

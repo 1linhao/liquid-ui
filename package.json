@@ -38,7 +38,11 @@
     "dist",
     "README.md",
     "LICENSE",
-    "THIRD_PARTY_NOTICES.md"
+    "THIRD_PARTY_NOTICES.md",
+    "core.js",
+    "dom.js",
+    "vue2.js",
+    "styles.css"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -52,6 +56,9 @@
     "vue": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   },
   "engines": {
     "node": ">=18"
