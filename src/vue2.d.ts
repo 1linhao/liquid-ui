@@ -1,7 +1,8 @@
-import type { LiquidRuntime } from './core.js'
+import type { FeedbackController, LiquidRuntime } from './core.js'
 
 export interface LiquidUIPlugin extends LiquidRuntime {
   runtime: LiquidRuntime
+  feedback: FeedbackController
   install(Vue: unknown): void
 }
 
@@ -10,6 +11,7 @@ export const LiquidButton: Record<string, unknown>
 export const LiquidDatePicker: Record<string, unknown>
 export const LiquidDialog: Record<string, unknown>
 export const LiquidDropdown: Record<string, unknown>
+export const LiquidFeedbackHost: Record<string, unknown>
 export const LiquidForm: Record<string, unknown>
 export const LiquidFormItem: Record<string, unknown>
 export const LiquidGlassSurface: Record<string, unknown>

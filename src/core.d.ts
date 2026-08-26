@@ -68,7 +68,24 @@ export interface FormController {
   subscribe(listener: (state: FormState) => void): () => void
   destroy(): void
 }
+export interface FeedbackState {
+  readonly messages: readonly Readonly<Record<string, unknown>>[]
+  readonly requests: readonly Readonly<Record<string, unknown>>[]
+}
+export interface FeedbackController {
+  getState(): FeedbackState
+  message(input: string | Record<string, unknown>): { id: string; close(): void }
+  notification(input: string | Record<string, unknown>): { id: string; close(): void }
+  dismiss(id: string, reason?: string): FeedbackState
+  clear(): FeedbackState
+  confirm(input: string | Record<string, unknown>): Promise<boolean>
+  prompt(input: string | Record<string, unknown>): Promise<string | null>
+  settleRequest(id: string, accepted: boolean, value?: string): FeedbackState
+  subscribe(listener: (state: FeedbackState) => void): () => void
+  destroy(): void
+}
 export function createFormController(options: { getValues(): Record<string, unknown>; rules?: Record<string, FormRule | FormRule[]> }): FormController
+export function createFeedbackController(options?: Record<string, unknown>): FeedbackController
 export function createThemeController(options?: Record<string, unknown>): LiquidRuntime['theme']
 export function createMaterialController(options?: Record<string, unknown>): LiquidRuntime['material']
 export function detectCapabilities(environment?: unknown): LiquidRuntime['material'] extends { getCapabilities(): infer T } ? T : never
