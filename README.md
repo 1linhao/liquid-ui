@@ -1,6 +1,11 @@
 # LiquidUI
 
+[![CI](https://github.com/1linhao/liquid-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/1linhao/liquid-ui/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 LiquidUI 是一套可跨网页项目复用的 Liquid Glass 资源库。主题状态、语义材质、能力检测、滤镜缓存和浏览器降级集中在无框架核心中；原生 DOM 与 Vue 2 适配器共享同一套能力，不绑定路由、状态仓库或业务接口。
+
+项目总览与仓库选型见 [Liquid 公共入口](https://github.com/1linhao/liquid)。
 
 ## 适合什么项目
 
@@ -13,14 +18,19 @@ LiquidUI 只负责控件和材质。应用框架布局由独立的 [LiquidAppShe
 
 ## 安装
 
+当前版本通过 GitHub 发布：
+
 ```sh
-pnpm add @liqui/liquid-ui
+pnpm add @liqui/liquid-ui@github:1linhao/liquid-ui
 ```
 
-当前源码仓库可在 npm 包正式发布前通过 Git 安装：
+安装后，应用代码仍使用稳定包名 `@liqui/liquid-ui`。如果需要参与开发，可以克隆源码并执行完整检查：
 
 ```sh
-pnpm add github:1linhao/liquid-ui
+git clone https://github.com/1linhao/liquid-ui.git
+cd liquid-ui
+npm install
+npm run check
 ```
 
 ## Vue 2 快速开始
