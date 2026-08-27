@@ -1,21 +1,68 @@
 # LiquidUI
 
-LiquidUI 是一套可跨网页项目复用的 Liquid Glass 资源库。主题状态、材质渲染、能力检测、滤镜缓存和浏览器降级集中在无框架 runtime 中；原生 DOM 与 Vue 2 通过独立 Adapter 使用同一套核心能力。
+LiquidUI 是一套可跨网页项目复用的 Liquid Glass 资源库。主题状态、语义材质、能力检测、滤镜缓存和浏览器降级集中在无框架核心中；原生 DOM 与 Vue 2 适配器共享同一套能力，不绑定路由、状态仓库或业务接口。
 
-## 特性
+## 适合什么项目
 
-- 亮色、暗色和跟随系统三种模式，支持海蓝、紫罗兰、翡翠、琥珀四色。
-- `panel`、`overlay`、`control`、`navigation` 四种语义材质及渐进降级。
-- 原生 DOM 不依赖 Vue；Vue 2 是可选 peer dependency。
-- controlled Button、Input、NumberInput、Select、DatePicker、Switch、Tag 和 Form。
-- Overlay 统一处理定位、外部点击、Escape、焦点恢复及监听清理。
-- ESM、TypeScript 声明和可独立导入的 CSS 资源。
+- 普通 HTML/JavaScript 网页：使用 `core` 与 `dom` 入口。
+- Vue 2.6/2.7 应用：安装 `vue2` 插件并按需使用公开组件。
+- 需要逐步替换旧控件库的项目：常用属性同时提供 `prop`、`data`、`visible.sync` 等兼容契约。
+- 需要亮暗主题、四色色板、玻璃材质与低性能降级的后台、门户和工具类网页。
+
+LiquidUI 只负责控件和材质。应用框架布局由独立的 [LiquidAppShell](https://github.com/1linhao/liquid-app-shell) 提供，两者可以分别采用。
 
 ## 安装
 
 ```sh
 pnpm add @liqui/liquid-ui
 ```
+
+当前源码仓库可在 npm 包正式发布前通过 Git 安装：
+
+```sh
+pnpm add github:1linhao/liquid-ui
+```
+
+## Vue 2 快速开始
+
+```js
+import Vue from 'vue'
+import { createLiquidUI } from '@liqui/liquid-ui/vue2'
+import '@liqui/liquid-ui/styles.css'
+
+Vue.use(createLiquidUI({
+  paletteStorage: window.localStorage,
+  initialMode: 'system',
+  initialPalette: 'blue'
+}))
+```
+
+```vue
+<liquid-form ref="form" :model="model" :rules="rules" @submit="save">
+  <liquid-form-item prop="region" label="区域" required>
+    <liquid-select v-model="model.region" filterable>
+      <option value="cn">中国大陆</option>
+      <option value="sg">新加坡</option>
+    </liquid-select>
+  </liquid-form-item>
+
+  <liquid-form-item prop="startAt" label="开始时间" required>
+    <liquid-date-picker v-model="model.startAt" type="datetime" />
+  </liquid-form-item>
+
+  <liquid-switch
+    v-model="model.enabled"
+    :active-value="1"
+    :inactive-value="0"
+    active-text="启用"
+    inactive-text="停用"
+  />
+
+  <liquid-button type="submit" tone="accent">保存</liquid-button>
+</liquid-form>
+```
+
+组件采用受控数据模型：通过 `value`/`v-model` 接收状态，通过 `input`、`change`、`submit` 等事件表达意图，不会直接读写业务状态。
 
 ## 无框架核心与原生 DOM
 
@@ -29,46 +76,48 @@ const runtime = createLiquidRuntime({
   initialMode: 'system',
   initialPalette: 'blue'
 })
-const surface = createLiquidSurface({ runtime, surface: 'panel', content: '你好，LiquidUI' })
+
+const surface = createLiquidSurface({
+  runtime,
+  surface: 'panel',
+  content: '你好，LiquidUI'
+})
 document.body.append(surface.element)
 ```
 
-## Vue 2
+完整的零框架消费端见 [liquid-vanilla-lab](https://github.com/1linhao/liquid-vanilla-lab)。
 
-```js
-import Vue from 'vue'
-import { createLiquidUI } from '@liqui/liquid-ui/vue2'
-import '@liqui/liquid-ui/styles.css'
+## 公开能力
 
-Vue.use(createLiquidUI({ paletteStorage: window.localStorage }))
-```
+| 分类 | 公开组件或能力 |
+| --- | --- |
+| 基础输入 | Button、Input、Textarea、NumberInput、Select、DatePicker、Switch、Segmented |
+| 状态展示 | Tag、Badge、Spinner、Progress、Meter、Icon、IconButton |
+| 数据与容器 | Table、TableColumn、Card、Descriptions、ScrollArea |
+| 表单 | Form、FormItem、同步/异步校验、回调式兼容校验 |
+| 浮层 | Dialog、Drawer、Popover、Dropdown、Tooltip |
+| 反馈 | Message、Notification、Confirm、Prompt、Loading 与 FeedbackHost |
+| 布局与导航 | Row、Col、Breadcrumb、Menu、NavIcon |
+| 主题与材质 | GlassSurface、ThemeToggle、PalettePicker、四类语义 Surface |
 
-```vue
-<liquid-form ref="form" :model="model" :rules="rules" @submit="save">
-  <liquid-form-item field="region" label="区域" required>
-    <liquid-select v-model="model.region" :options="regions" filterable />
-  </liquid-form-item>
-  <liquid-form-item field="startDate" label="开始日期" required>
-    <liquid-date-picker v-model="model.startDate" min="2028-01-01" />
-  </liquid-form-item>
-  <liquid-button type="submit">保存</liquid-button>
-</liquid-form>
-```
+Select 可使用 `options` 数组或原生 `<option>`；DatePicker 支持 `date`、`month`、`datetime` 和时间戳值；Table 可使用 `rows/columns` 数据模型，也可使用 `data`、`prop` 和声明式 `LiquidTableColumn`。完整契约见 [组件文档](docs/components/primitives.md)。
 
 ## 包入口
 
 | 入口 | 用途 |
 | --- | --- |
-| `@liqui/liquid-ui/core` | 无框架 runtime、主题、材质与表单校验 |
-| `@liqui/liquid-ui/dom` | 原生 Surface 和 AnchoredOverlay |
-| `@liqui/liquid-ui/vue2` | Vue 2 插件与公开控件 |
+| `@liqui/liquid-ui/core` | 无框架 runtime、主题、材质、表单校验与反馈控制器 |
+| `@liqui/liquid-ui/dom` | 原生 Surface、AnchoredOverlay 和 ModalLayer |
+| `@liqui/liquid-ui/vue2` | Vue 2 插件与全部公开组件 |
 | `@liqui/liquid-ui/styles.css` | 完整样式 |
 | `@liqui/liquid-ui/tokens.css` | 设计令牌 |
 | `@liqui/liquid-ui/styles/base.css` | 基础样式 |
 | `@liqui/liquid-ui/styles/components.css` | 控件样式 |
 | `@liqui/liquid-ui/styles/utilities.css` | 布局工具 |
 
-## 主题与材质
+仓库根目录还保留 `core.js`、`dom.js`、`vue2.js` 和 `styles.css` 代理文件，供尚不能解析 package exports 的旧构建工具使用。
+
+## 主题、材质与降级
 
 ```js
 runtime.theme.setMode('dark')
@@ -77,9 +126,17 @@ runtime.material.setQuality('reduced')
 await runtime.material.preload([{ surface: 'overlay', width: 480, height: 320 }])
 ```
 
-业务代码只应选择语义材质和质量档位，不应直接创建 SVG filter 或拼接浏览器分支。
+业务代码只选择 `panel`、`overlay`、`control`、`navigation` 语义材质和 `auto`、`reduced`、`full` 质量档位。运行时会根据浏览器能力与减少动态效果偏好自动降级，不要求业务代码创建 SVG filter 或编写浏览器分支。
 
-## 开发与验证
+所有内部材质类均使用 `liqui-` 命名空间，避免与宿主项目的通用 `.liquid-*` 或标签选择器冲突。
+
+## 浏览器与运行环境
+
+- 现代 Chromium、Firefox 和 Safari；不支持高级滤镜时自动使用 CSS 材质降级。
+- Node.js 18 或更高版本用于构建与测试。
+- Vue 2.6/2.7 仅为可选 peer dependency；无框架入口不会加载 Vue。
+
+## 开发与发布验收
 
 ```sh
 npm install
@@ -87,8 +144,8 @@ npm run check
 npm pack --dry-run
 ```
 
-组件契约见 [docs/components/primitives.md](docs/components/primitives.md)，视觉与功能基线见 [docs/baselines/README.md](docs/baselines/README.md)。
+`check` 会运行单元测试、构建 ESM/CSS/类型声明，并校验所有公开导出。跨主题、跨视口和键盘交互的 75 项视觉回归由 [liquid-integration-lab](https://github.com/1linhao/liquid-integration-lab) 执行。
 
-## 许可证
+## 维护与许可
 
-MIT。第三方参考和声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+版本变化见 [CHANGELOG.md](CHANGELOG.md)，参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)，安全问题见 [SECURITY.md](SECURITY.md)。项目采用 MIT 许可证；第三方参考和声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
