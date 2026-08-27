@@ -5,7 +5,7 @@
   "keywords": ["liquid-glass", "design-system", "vue2", "ui-components", "framework-agnostic"],
   "license": "MIT",
   "repository": { "type": "git", "url": "git+https://github.com/1linhao/liquid-ui.git" },
-  "homepage": "https://github.com/1linhao/liquid-ui#readme",
+  "homepage": "https://1linhao.github.io/liquid-integration-lab/?mode=light&palette=blue#components",
   "bugs": { "url": "https://github.com/1linhao/liquid-ui/issues" },
   "publishConfig": { "access": "public", "provenance": true },
   "type": "module",

@@ -7,6 +7,14 @@ LiquidUI 是一套可跨网页项目复用的 Liquid Glass 资源库。主题状
 
 项目总览与仓库选型见 [Liquid 公共入口](https://github.com/1linhao/liquid)。
 
+## 效果预览
+
+[![LiquidUI 控件、表单与浮层效果](https://raw.githubusercontent.com/1linhao/liquid-integration-lab/main/tests/visual/material-matrix.spec.js-snapshots/light-blue-controls-desktop-linux.png)](https://1linhao.github.io/liquid-integration-lab/?mode=light&palette=blue#components)
+
+[打开在线组件演示](https://1linhao.github.io/liquid-integration-lab/?mode=light&palette=blue#components) · [查看暗色紫罗兰主题](https://1linhao.github.io/liquid-integration-lab/?mode=dark&palette=violet#components)
+
+预览由真实 LiquidUI 组件生成，并与集成仓库的视觉回归基线共用同一份页面代码。演示中可以切换亮暗模式、四色色板和材质质量，并操作表单、表格、Dialog、Drawer、Select、DatePicker 与反馈组件。
+
 ## 适合什么项目
 
 - 普通 HTML/JavaScript 网页：使用 `core` 与 `dom` 入口。
