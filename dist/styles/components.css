@@ -1,0 +1,303 @@
+.liqui-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--liquid-radius, 24px);
+  color: var(--liquid-ink);
+}
+
+.liqui-glass--elevated { box-shadow: var(--liquid-shadow); }
+.liqui-glass__backdrop, .liqui-glass__refract, .liqui-glass__tint,
+.liqui-glass__specular, .liqui-glass__shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.liqui-glass__backdrop, .liqui-glass__refract { z-index: 0; }
+.liqui-glass__tint { z-index: 1; background: linear-gradient(135deg, var(--liquid-tint), var(--liquid-tint-deep)); }
+.liqui-glass__specular { z-index: 2; background-size: 100% 100%; }
+.liqui-glass__shine { z-index: 2; box-shadow: inset 0 1px 1px var(--liquid-rim-high), inset -1px -1px 1px var(--liquid-rim-low); }
+.liqui-glass__content { position: relative; z-index: 3; }
+.liqui-glass__refract--fade, .liqui-glass__specular--fade { animation: liquid-material-in 180ms ease-out; }
+@keyframes liquid-material-in { from { opacity: 0; } }
+
+.liquid-button {
+  min-height: 42px;
+  padding: 0 20px;
+  border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 65%, transparent);
+  border-radius: var(--liquid-radius-control);
+  background: color-mix(in srgb, var(--liquid-tint) 76%, transparent);
+  box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control);
+  color: var(--liquid-ink);
+  cursor: pointer;
+  transition: transform var(--liquid-duration-fast) var(--liquid-ease-standard), background var(--liquid-duration-fast);
+}
+.liquid-button:hover:not(:disabled) { background: color-mix(in srgb, var(--liquid-tint) 86%, var(--liquid-accent) 14%); }
+.liquid-button:active:not(:disabled) { transform: scale(.97); }
+.liquid-button:disabled { cursor: not-allowed; opacity: .48; }
+.liquid-button--accent { background: color-mix(in srgb, var(--liquid-accent) 82%, transparent); color: var(--liquid-on-accent); }
+.liquid-button--small { min-height: 34px; padding-inline: 14px; font-size: .875rem; }
+.liquid-button--large { min-height: 50px; padding-inline: 26px; }
+.liquid-spinner { display: inline-block; width: 1em; height: 1em; margin-right: .5em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: liquid-spin .7s linear infinite; }
+@keyframes liquid-spin { to { transform: rotate(1turn); } }
+
+.liquid-input, .liquid-number-input {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent);
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--liquid-tint) 72%, transparent);
+  box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control);
+  color: var(--liquid-ink);
+  transition: border-color var(--liquid-duration-fast), box-shadow var(--liquid-duration-fast), background var(--liquid-duration-fast);
+}
+.liquid-input:focus-within, .liquid-number-input:focus-within { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); }
+.liquid-input.is-invalid, .liquid-number-input.is-invalid { border-color: var(--liquid-danger); }
+.liquid-input.is-disabled, .liquid-number-input.is-disabled { opacity: .5; }
+.liquid-input__control, .liquid-number-input__control { min-width: 0; flex: 1; height: 40px; padding: 0; border: 0; outline: 0; background: transparent; color: inherit; }
+.liquid-input__control::placeholder, .liquid-number-input__control::placeholder { color: var(--liquid-ink-muted); }
+.liquid-input__prefix, .liquid-input__suffix { display: inline-flex; color: var(--liquid-ink-muted); }
+.liquid-input__clear, .liquid-number-input__step { display: grid; place-items: center; border: 0; background: transparent; color: var(--liquid-ink-muted); cursor: pointer; }
+.liquid-input__clear { width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; }
+.liquid-input__clear:hover, .liquid-number-input__step:hover { background: color-mix(in srgb, var(--liquid-accent) 14%, transparent); color: var(--liquid-accent); }
+.liquid-number-input { padding-right: 5px; }
+.liquid-number-input__steps { display: grid; align-self: stretch; width: 30px; padding: 3px 0; }
+.liquid-number-input__step { min-height: 17px; border-radius: 8px; line-height: 1; }
+
+.liquid-switch { display: inline-flex; align-items: center; gap: 10px; padding: 0; border: 0; background: transparent; color: var(--liquid-ink); cursor: pointer; }
+.liquid-switch__thumb { position: relative; width: 48px; height: 28px; flex: 0 0 auto; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--liquid-ink-muted) 24%, var(--liquid-tint)); box-shadow: var(--liquid-control-inset-shadow); transition: background var(--liquid-duration-medium), border-color var(--liquid-duration-medium); }
+.liquid-switch__thumb::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--liquid-control-knob); box-shadow: var(--liquid-shadow-control-small), inset 0 1px 1px var(--liquid-control-knob-highlight); transition: transform var(--liquid-duration-medium) var(--liquid-ease-standard); }
+.liquid-switch.is-checked .liquid-switch__thumb { border-color: color-mix(in srgb, var(--liquid-accent) 68%, transparent); background: var(--liquid-accent); }
+.liquid-switch.is-checked .liquid-switch__thumb::after { transform: translateX(20px); }
+.liquid-switch:disabled { cursor: not-allowed; opacity: .48; }
+
+.liquid-tag { --liquid-tag-tone: var(--liquid-ink-muted); display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 9px; border: 1px solid color-mix(in srgb, var(--liquid-tag-tone) 30%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--liquid-tag-tone) 13%, var(--liquid-tint)); color: var(--liquid-tag-tone); font-size: .78rem; font-weight: 700; }
+.liquid-tag--accent { --liquid-tag-tone: var(--liquid-accent); }
+.liquid-tag--success { --liquid-tag-tone: var(--liquid-success); }
+.liquid-tag--warning { --liquid-tag-tone: var(--liquid-warning); }
+.liquid-tag--danger { --liquid-tag-tone: var(--liquid-danger); }
+.liquid-tag--info { --liquid-tag-tone: var(--liquid-info); }
+.liquid-tag__close { display: grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+.liquid-tag__close:hover { background: color-mix(in srgb, var(--liquid-tag-tone) 18%, transparent); }
+.liquid-tag.is-disabled { opacity: .48; }
+
+.liquid-select { position: relative; width: 100%; min-width: 0; }
+.liquid-select__trigger { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control); color: var(--liquid-ink); font: inherit; text-align: left; cursor: pointer; }
+.liquid-select__trigger > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.liquid-select__trigger .is-placeholder, .liquid-select__empty { color: var(--liquid-ink-muted); }
+.liquid-select.is-open .liquid-select__trigger, .liquid-select__trigger:focus-visible { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); outline: 0; }
+.liquid-select.is-invalid .liquid-select__trigger { border-color: var(--liquid-danger); }
+.liquid-select__trigger:disabled { cursor: not-allowed; opacity: .5; }
+.liquid-select__clear, .liquid-select__arrow { flex: 0 0 auto; color: var(--liquid-ink-muted); }
+.liquid-select__clear { position: absolute; z-index: 1; top: 8px; right: 8px; display: grid; place-items: center; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%; background: transparent; font-size: 1.15rem; cursor: pointer; }
+.liquid-select.has-clear .liquid-select__trigger { padding-right: 42px; }
+.liquid-select__clear:hover { background: color-mix(in srgb, var(--liquid-accent) 14%, transparent); color: var(--liquid-accent); }
+.liquid-select__arrow { transition: transform var(--liquid-duration-fast); }
+.liquid-select.is-open .liquid-select__arrow { transform: rotate(180deg); }
+.liquid-select__menu { z-index: 1000; box-sizing: border-box; margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; }
+.liquid-select__menu[hidden] { display: none; }
+.liquid-select__surface { width: 100%; max-height: inherit; border-radius: 18px; }
+.liquid-select__surface > .liqui-glass__content { display: grid; gap: 6px; max-height: inherit; padding: 8px; }
+.liquid-select__search { width: 100%; min-height: 38px; padding: 0 10px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 11px; outline: 0; background: color-mix(in srgb, var(--liquid-tint) 70%, transparent); color: var(--liquid-ink); }
+.liquid-select__search:focus { border-color: var(--liquid-accent); }
+.liquid-select__options { min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.liquid-select__option { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 38px; padding: 0 10px; border: 0; border-radius: 10px; background: transparent; color: var(--liquid-ink); font: inherit; text-align: left; cursor: pointer; }
+.liquid-select__option:hover:not(:disabled), .liquid-select__option.is-active { background: color-mix(in srgb, var(--liquid-accent) 12%, transparent); }
+.liquid-select__option.is-selected { background: color-mix(in srgb, var(--liquid-accent) 18%, transparent); color: var(--liquid-accent); font-weight: 700; }
+.liquid-select__option:disabled { cursor: not-allowed; opacity: .42; }
+.liquid-select__empty { padding: 14px 10px; text-align: center; }
+
+.liquid-form { display: grid; gap: var(--liquid-space-4, 16px); }
+.liquid-form-item { display: grid; gap: 6px; min-width: 0; }
+.liquid-form-item__label { color: var(--liquid-ink-muted); font-size: .82rem; font-weight: 700; }
+.liquid-form-item.is-required .liquid-form-item__label span { color: var(--liquid-danger); }
+.liquid-form-item__control { min-width: 0; }
+.liquid-form-item__help, .liquid-form-item__message { min-height: 1em; margin: 0; font-size: .78rem; }
+.liquid-form-item__help { color: var(--liquid-ink-muted); }
+.liquid-form-item__message { color: var(--liquid-danger); }
+.liquid-form-item.is-invalid .liquid-input, .liquid-form-item.is-invalid .liquid-number-input, .liquid-form-item.is-invalid .liquid-select__trigger { border-color: var(--liquid-danger); }
+
+.liquid-date-picker { position: relative; width: 100%; min-width: 0; }
+.liquid-date-picker--native { box-sizing: border-box; display: flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control); color: var(--liquid-ink); }
+.liquid-date-picker--native:focus-within { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); }
+.liquid-date-picker--native.is-invalid { border-color: var(--liquid-danger); }
+.liquid-date-picker__native { min-width: 0; flex: 1; height: 40px; padding: 0; border: 0; outline: 0; background: transparent; color: inherit; font: inherit; color-scheme: light; }
+[data-liquid-mode="dark"] .liquid-date-picker__native { color-scheme: dark; }
+.liquid-date-picker__native-icon { color: var(--liquid-ink-muted); }
+.liquid-date-picker__trigger { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control); color: var(--liquid-ink); font: inherit; text-align: left; cursor: pointer; }
+.liquid-date-picker__trigger > span:nth-child(2) { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.liquid-date-picker__trigger .is-placeholder { color: var(--liquid-ink-muted); }
+.liquid-date-picker.is-open .liquid-date-picker__trigger, .liquid-date-picker__trigger:focus-visible { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); outline: 0; }
+.liquid-date-picker.is-invalid .liquid-date-picker__trigger, .liquid-form-item.is-invalid .liquid-date-picker__trigger { border-color: var(--liquid-danger); }
+.liquid-date-picker__trigger:disabled { cursor: not-allowed; opacity: .5; }
+.liquid-date-picker__arrow { color: var(--liquid-ink-muted); }
+.liquid-date-picker__clear { position: absolute; z-index: 1; top: 8px; right: 8px; display: grid; place-items: center; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--liquid-ink-muted); font-size: 1.15rem; cursor: pointer; }
+.liquid-date-picker.has-clear .liquid-date-picker__trigger { padding-right: 42px; }
+.liquid-date-picker__panel { z-index: 1000; box-sizing: border-box; width: min(344px, calc(100vw - 24px)); margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; }
+.liquid-date-picker__panel[hidden] { display: none; }
+.liquid-date-picker__surface { width: 100%; max-height: inherit; border-radius: 20px; }
+.liquid-date-picker__surface > .liqui-glass__content { display: grid; gap: 8px; max-height: inherit; padding: 10px; overflow: auto; }
+.liquid-date-picker__manual input { width: 100%; min-height: 38px; padding: 0 10px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 11px; outline: 0; background: color-mix(in srgb, var(--liquid-tint) 70%, transparent); color: var(--liquid-ink); }
+.liquid-date-picker__manual input:focus { border-color: var(--liquid-accent); }
+.liquid-date-picker__manual.is-invalid input { border-color: var(--liquid-danger); }
+.liquid-date-picker__manual p { margin: 5px 2px 0; color: var(--liquid-danger); font-size: .72rem; }
+.liquid-date-picker__header { display: grid; grid-template-columns: 36px 1fr 36px; align-items: center; }
+.liquid-date-picker__header strong { text-align: center; }
+.liquid-date-picker__header button, .liquid-date-picker__footer button { border: 0; border-radius: 10px; background: transparent; color: var(--liquid-ink); cursor: pointer; }
+.liquid-date-picker__header button { width: 36px; height: 36px; font-size: 1.4rem; }
+.liquid-date-picker__header button:hover, .liquid-date-picker__footer button:hover { background: color-mix(in srgb, var(--liquid-accent) 12%, transparent); color: var(--liquid-accent); }
+.liquid-date-picker__weekdays, .liquid-date-picker__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.liquid-date-picker__weekdays span { padding-block: 4px; color: var(--liquid-ink-muted); font-size: .68rem; text-align: center; }
+.liquid-date-picker__day { aspect-ratio: 1; min-width: 0; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--liquid-ink); cursor: pointer; }
+.liquid-date-picker__day:hover:not(:disabled), .liquid-date-picker__day.is-active { background: color-mix(in srgb, var(--liquid-accent) 12%, transparent); }
+.liquid-date-picker__day.is-outside { color: var(--liquid-ink-muted); opacity: .58; }
+.liquid-date-picker__day.is-today:not(.is-selected) { box-shadow: inset 0 0 0 1px var(--liquid-accent); color: var(--liquid-accent); }
+.liquid-date-picker__day.is-selected { background: var(--liquid-accent); color: var(--liquid-on-accent); font-weight: 800; }
+.liquid-date-picker__day:disabled { cursor: not-allowed; opacity: .28; text-decoration: line-through; }
+.liquid-date-picker__footer { display: grid; grid-template-columns: auto auto 1fr auto; gap: 5px; }
+.liquid-date-picker__footer button { min-height: 34px; padding-inline: 10px; }
+
+.liquid-dialog { box-sizing: border-box; width: min(560px, calc(100vw - 24px)); max-height: min(760px, calc(100vh - 24px)); margin: auto; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; }
+.liquid-dialog[hidden] { display: none; }
+.liquid-dialog::backdrop { background: color-mix(in srgb, var(--liquid-ink) 26%, transparent); backdrop-filter: blur(5px); }
+.liquid-dialog__surface { width: 100%; max-height: inherit; border-radius: 24px; }
+.liquid-dialog__surface > .liqui-glass__content { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: inherit; }
+.liquid-dialog__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px 12px; }
+.liquid-dialog__header h2 { margin: 0; font-size: 1.2rem; }
+.liquid-dialog__close { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 auto; padding: 0; border: 0; border-radius: 50%; background: color-mix(in srgb, var(--liquid-ink-muted) 10%, transparent); color: var(--liquid-ink); font-size: 1.35rem; cursor: pointer; }
+.liquid-dialog__close:hover { background: color-mix(in srgb, var(--liquid-accent) 14%, transparent); color: var(--liquid-accent); }
+.liquid-dialog__body { min-height: 0; padding: 8px 20px 20px; overflow: auto; overscroll-behavior: contain; }
+.liquid-dialog__footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px 18px; border-top: 1px solid color-mix(in srgb, var(--liquid-rim-high) 36%, transparent); }
+
+@media (max-width: 600px) {
+  .liquid-dialog { width: calc(100vw - 20px); max-height: calc(100vh - 20px); }
+}
+
+.liquid-popover, .liquid-dropdown, .liquid-tooltip { display: inline-flex; }
+.liquid-popover__trigger, .liquid-dropdown__trigger, .liquid-tooltip__trigger { min-height: 34px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: var(--liquid-radius-control); background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); color: var(--liquid-ink); font: inherit; cursor: pointer; }
+.liquid-popover__trigger:focus-visible, .liquid-dropdown__trigger:focus-visible, .liquid-tooltip__trigger:focus-visible { outline: 3px solid color-mix(in srgb, var(--liquid-accent) 24%, transparent); outline-offset: 2px; }
+.liquid-popover__panel, .liquid-dropdown__menu, .liquid-tooltip__panel { z-index: 1000; box-sizing: border-box; width: min(320px, calc(100vw - 24px)); margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; }
+.liquid-popover__panel[hidden], .liquid-dropdown__menu[hidden], .liquid-tooltip__panel[hidden] { display: none; }
+.liquid-popover__surface, .liquid-dropdown__surface, .liquid-tooltip__surface { width: 100%; border-radius: 16px; }
+.liquid-popover__surface > .liqui-glass__content { padding: 14px; }
+.liquid-dropdown__surface > .liqui-glass__content { display: grid; gap: 3px; padding: 6px; }
+.liquid-dropdown__item { min-height: 38px; padding: 0 10px; border: 0; border-radius: 10px; background: transparent; color: var(--liquid-ink); font: inherit; text-align: left; cursor: pointer; }
+.liquid-dropdown__item:hover:not(:disabled), .liquid-dropdown__item.is-active { background: color-mix(in srgb, var(--liquid-accent) 12%, transparent); }
+.liquid-dropdown__item--danger { color: var(--liquid-danger); }
+.liquid-dropdown__item:disabled { cursor: not-allowed; opacity: .42; }
+.liquid-tooltip__panel { width: max-content; max-width: min(260px, calc(100vw - 24px)); pointer-events: none; }
+.liquid-tooltip__surface > .liqui-glass__content { padding: 7px 10px; font-size: .78rem; }
+
+.liquid-table { position: relative; min-width: 0; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 42%, transparent); border-radius: 18px; background: color-mix(in srgb, var(--liquid-tint) 54%, transparent); overflow: hidden; }
+.liquid-table__scroll { width: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable both-edges; }
+.liquid-table table { width: 100%; min-width: max-content; border-spacing: 0; border-collapse: separate; color: var(--liquid-ink); font-size: .86rem; }
+.liquid-table caption { padding: 12px 14px; color: var(--liquid-ink-muted); text-align: left; }
+.liquid-table thead { position: sticky; z-index: 2; top: 0; }
+.liquid-table th { padding: 11px 14px; border-bottom: 1px solid color-mix(in srgb, var(--liquid-rim-high) 42%, transparent); background: color-mix(in srgb, var(--liquid-tint-deep) 88%, transparent); color: var(--liquid-ink-muted); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; backdrop-filter: blur(18px); }
+.liquid-table th button { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 800; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.liquid-table td { padding: 11px 14px; border-bottom: 1px solid color-mix(in srgb, var(--liquid-rim-high) 22%, transparent); }
+.liquid-table tbody tr:last-child td { border-bottom: 0; }
+.liquid-table tbody tr:hover:not(.liquid-table__empty-row) { background: color-mix(in srgb, var(--liquid-accent) 8%, transparent); }
+.liquid-table .is-center { text-align: center; }
+.liquid-table .is-right { text-align: right; }
+.liquid-table__empty-row td { padding: 28px; color: var(--liquid-ink-muted); text-align: center; }
+.liquid-table__loading { position: absolute; z-index: 3; inset: 0; display: grid; place-content: center; background: color-mix(in srgb, var(--liquid-tint-deep) 76%, transparent); color: var(--liquid-ink); backdrop-filter: blur(6px); }
+
+.liquid-feedback-host { position: relative; z-index: 1200; }
+.liquid-feedback-stack { position: fixed; z-index: 1200; top: 18px; right: 18px; display: grid; gap: 10px; width: min(380px, calc(100vw - 36px)); pointer-events: none; }
+.liquid-feedback { --liquid-feedback-tone: var(--liquid-info); pointer-events: auto; }
+.liquid-feedback--success { --liquid-feedback-tone: var(--liquid-success); }
+.liquid-feedback--warning { --liquid-feedback-tone: var(--liquid-warning); }
+.liquid-feedback--danger { --liquid-feedback-tone: var(--liquid-danger); }
+.liquid-feedback > .liqui-glass__content { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 13px 14px; border-left: 3px solid var(--liquid-feedback-tone); }
+.liquid-feedback strong { display: block; margin-bottom: 3px; }
+.liquid-feedback p { margin: 0; color: var(--liquid-ink-muted); font-size: .86rem; }
+.liquid-feedback button { width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--liquid-ink-muted); font-size: 1.15rem; cursor: pointer; }
+.liquid-feedback button:hover { background: color-mix(in srgb, var(--liquid-accent) 14%, transparent); color: var(--liquid-accent); }
+.liquid-feedback-request__message { margin: 0 0 14px; color: var(--liquid-ink-muted); }
+.liquid-feedback-request__input { box-sizing: border-box; width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; outline: 0; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); color: var(--liquid-ink); }
+.liquid-feedback-request__input:focus { border-color: var(--liquid-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); }
+
+.liquid-textarea { box-sizing: border-box; width: 100%; min-height: 92px; padding: 11px 12px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 62%, transparent); border-radius: 15px; outline: 0; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), var(--liquid-shadow-control); color: var(--liquid-ink); font: inherit; }
+.liquid-textarea:focus { border-color: var(--liquid-accent); box-shadow: inset 0 1px 1px var(--liquid-rim-high), 0 0 0 3px color-mix(in srgb, var(--liquid-accent) 22%, transparent); }
+.liquid-textarea.is-invalid { border-color: var(--liquid-danger); }
+.liquid-segmented { display: inline-grid; grid-auto-flow: column; padding: 3px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 52%, transparent); border-radius: 14px; background: color-mix(in srgb, var(--liquid-tint) 64%, transparent); }
+.liquid-segmented__option { min-height: 34px; padding: 0 13px; border: 0; border-radius: 10px; background: transparent; color: var(--liquid-ink-muted); font: inherit; cursor: pointer; }
+.liquid-segmented__option.is-selected { background: color-mix(in srgb, var(--liquid-accent) 18%, var(--liquid-tint)); box-shadow: var(--liquid-shadow-control-small); color: var(--liquid-accent); font-weight: 700; }
+.liquid-segmented__option:focus-visible { outline: 2px solid var(--liquid-accent); outline-offset: 1px; }
+.liquid-segmented__option:disabled { opacity: .42; cursor: not-allowed; }
+.liquid-icon { display: inline-block; flex: 0 0 auto; vertical-align: -.15em; }
+.liquid-icon-button { aspect-ratio: 1; padding: 0; }
+.liquid-icon-button .liquid-button__label { display: grid; place-items: center; }
+.liquid-spinner-wrap { display: inline-grid; place-items: center; }
+.liquid-spinner-wrap .liquid-spinner { width: var(--liquid-spinner-size); height: var(--liquid-spinner-size); margin: 0; }
+.liquid-progress { display: grid; gap: 6px; }
+.liquid-progress__meta { display: flex; justify-content: space-between; color: var(--liquid-ink-muted); font-size: .78rem; }
+.liquid-progress__track, .liquid-meter { height: 8px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, var(--liquid-ink-muted) 16%, transparent); }
+.liquid-progress__track > span, .liquid-meter > span { display: block; height: 100%; border-radius: inherit; background: var(--liquid-accent); transition: width var(--liquid-duration-medium) var(--liquid-ease-standard); }
+.liquid-scroll-area { overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.liquid-card > .liqui-glass__content { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.liquid-card__header, .liquid-card__body, .liquid-card__footer { padding: 16px 18px; }
+.liquid-card__header h3 { margin: 0; }
+.liquid-card__footer { border-top: 1px solid color-mix(in srgb, var(--liquid-rim-high) 34%, transparent); }
+.liquid-descriptions { display: grid; gap: 12px; }
+.liquid-descriptions h3 { margin: 0; }
+.liquid-descriptions dl { display: grid; grid-template-columns: repeat(var(--liquid-description-columns), minmax(0, 1fr)); gap: 14px 20px; margin: 0; }
+.liquid-descriptions dl > div { min-width: 0; }
+.liquid-descriptions dt { color: var(--liquid-ink-muted); font-size: .76rem; }
+.liquid-descriptions dd { margin: 4px 0 0; color: var(--liquid-ink); }
+.liquid-badge { position: relative; display: inline-flex; }
+.liquid-badge__mark { position: absolute; top: 0; right: 0; min-width: 18px; height: 18px; padding: 0 5px; transform: translate(50%, -50%); border: 2px solid var(--liquid-tint-deep); border-radius: 999px; background: var(--liquid-danger); color: var(--liquid-on-accent); font-size: .66rem; font-weight: 800; line-height: 18px; text-align: center; }
+.liquid-badge__mark--success { background: var(--liquid-success); }
+.liquid-badge__mark--warning { background: var(--liquid-warning); }
+.liquid-badge__mark--accent { background: var(--liquid-accent); }
+.liquid-badge__mark.is-dot { min-width: 8px; width: 8px; height: 8px; padding: 0; }
+.liquid-meter--success > span { background: var(--liquid-success); }
+.liquid-meter--warning > span { background: var(--liquid-warning); }
+.liquid-meter--danger > span { background: var(--liquid-danger); }
+@media (max-width: 600px) { .liquid-descriptions dl { grid-template-columns: minmax(0, 1fr); } }
+
+.liquid-loading { position: fixed; z-index: 1400; inset: 0; display: grid; place-content: center; pointer-events: auto; }
+.liquid-loading[hidden] { display: none; }
+.liquid-loading.has-backdrop { background: color-mix(in srgb, var(--liquid-ink) 18%, transparent); backdrop-filter: blur(4px); }
+.liquid-loading__content { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 58%, transparent); border-radius: 16px; background: color-mix(in srgb, var(--liquid-tint-deep) 88%, transparent); box-shadow: var(--liquid-shadow); color: var(--liquid-ink); }
+.liquid-drawer { box-sizing: border-box; width: min(440px, calc(100vw - 24px)); height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; }
+.liquid-drawer--right { margin-left: auto; }
+.liquid-drawer--left { margin-right: auto; }
+.liquid-drawer[hidden] { display: none; }
+.liquid-drawer::backdrop { background: color-mix(in srgb, var(--liquid-ink) 24%, transparent); backdrop-filter: blur(5px); }
+.liquid-drawer__surface { height: 100%; border-radius: 0; }
+.liquid-drawer__surface > .liqui-glass__content { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%; }
+.liquid-drawer__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; }
+.liquid-drawer__header h2 { margin: 0; font-size: 1.2rem; }
+.liquid-drawer__header button { width: 34px; height: 34px; border: 0; border-radius: 50%; background: color-mix(in srgb, var(--liquid-ink-muted) 10%, transparent); color: var(--liquid-ink); font-size: 1.3rem; cursor: pointer; }
+.liquid-drawer__body { min-height: 0; padding: 0 20px 20px; overflow: auto; }
+.liquid-drawer__footer { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid color-mix(in srgb, var(--liquid-rim-high) 34%, transparent); }
+.liquid-breadcrumb ol { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.liquid-breadcrumb li { display: inline-flex; align-items: center; gap: 7px; color: var(--liquid-ink-muted); }
+.liquid-breadcrumb button { padding: 0; border: 0; background: transparent; color: var(--liquid-accent); font: inherit; cursor: pointer; }
+.liquid-menu { display: grid; gap: 4px; }
+.liquid-menu > button { min-height: 38px; padding: 0 11px; border: 0; border-radius: 10px; background: transparent; color: var(--liquid-ink); font: inherit; text-align: left; cursor: pointer; }
+.liquid-menu > button:hover:not(:disabled), .liquid-menu > button.is-active { background: color-mix(in srgb, var(--liquid-accent) 13%, transparent); color: var(--liquid-accent); }
+.liquid-menu > button:disabled { opacity: .42; cursor: not-allowed; }
+.liquid-nav-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; background: color-mix(in srgb, var(--liquid-accent) 13%, transparent); color: var(--liquid-accent); }
+.liquid-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.liquid-col { box-sizing: border-box; grid-column: span var(--liquid-col-span); }
+.liquid-theme-toggle { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid color-mix(in srgb, var(--liquid-rim-high) 58%, transparent); border-radius: 50%; background: color-mix(in srgb, var(--liquid-tint) 72%, transparent); color: var(--liquid-ink); font-size: 1.15rem; cursor: pointer; }
+.liquid-palette-picker { display: inline-flex; gap: 7px; }
+.liquid-palette-picker button { width: 28px; height: 28px; padding: 0; border: 3px solid transparent; border-radius: 50%; background: var(--liquid-palette-blue); box-shadow: 0 0 0 1px color-mix(in srgb, var(--liquid-rim-high) 72%, transparent); cursor: pointer; }
+.liquid-palette-picker button[aria-checked="true"] { border-color: var(--liquid-on-accent); box-shadow: 0 0 0 2px var(--liquid-ink); }
+.liquid-palette-picker button.liquid-palette-picker__violet { background: var(--liquid-palette-violet); }
+.liquid-palette-picker button.liquid-palette-picker__emerald { background: var(--liquid-palette-emerald); }
+.liquid-palette-picker button.liquid-palette-picker__amber { background: var(--liquid-palette-amber); }
+@media (max-width: 600px) { .liquid-col { grid-column: 1 / -1; } .liquid-drawer { width: calc(100vw - 20px); } }
+
+@media (prefers-reduced-transparency: reduce) {
+  .liqui-glass__tint { opacity: 1; background: Canvas; }
+  .liqui-glass__backdrop, .liqui-glass__refract { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

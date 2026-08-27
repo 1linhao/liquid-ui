@@ -1,0 +1,8 @@
+const LiquidProgress = { name: "LiquidProgress", props: { value: { type: Number, default: 0 }, max: { type: Number, default: 100 }, label: { type: String, default: "Progress" }, showValue: Boolean }, computed: { percent() {
+  return this.max > 0 ? Math.min(100, Math.max(0, this.value / this.max * 100)) : 0;
+} }, render(h) {
+  return h("div", { class: "liquid-progress" }, [h("div", { class: "liquid-progress__meta" }, [h("span", this.label), this.showValue ? h("span", `${Math.round(this.percent)}%`) : null]), h("div", { class: "liquid-progress__track", attrs: { role: "progressbar", "aria-label": this.label, "aria-valuemin": "0", "aria-valuemax": String(this.max), "aria-valuenow": String(this.value) } }, [h("span", { style: { width: `${this.percent}%` } })])]);
+} };
+export {
+  LiquidProgress
+};

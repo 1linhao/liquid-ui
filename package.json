@@ -51,7 +51,7 @@
     "styles.css"
   ],
   "scripts": {
-    "prepare": "npm run build",
+    "prepack": "npm run build",
     "build": "node scripts/build.mjs",
     "test": "node --test",
     "check": "npm run test && npm run build && node scripts/check-exports.mjs"

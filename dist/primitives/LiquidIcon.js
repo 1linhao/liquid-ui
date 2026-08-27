@@ -1,0 +1,15 @@
+const PATHS = Object.freeze({ check: "M5 12l4 4L19 6", close: "M6 6l12 12M18 6L6 18", menu: "M4 7h16M4 12h16M4 17h16", chevron: "M9 18l6-6-6-6", search: "M11 5a6 6 0 100 12 6 6 0 000-12zm5 11l4 4", info: "M12 11v6m0-10h.01", home: "M3 11l9-8 9 8v9h-6v-6H9v6H3z", surface: "M12 3l9 5-9 5-9-5 9-5zm-9 10l9 5 9-5", control: "M4 7h10m4 0h2M4 17h2m4 0h10M14 5v4M8 15v4", data: "M4 19V9m6 10V5m6 14v-7m4 7V3", profile: "M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0", about: "M12 22a10 10 0 100-20 10 10 0 000 20zm0-7v-4m0-4h.01" });
+const LiquidIcon = {
+  name: "LiquidIcon",
+  inheritAttrs: false,
+  props: { name: { type: String, required: true }, size: { type: [Number, String], default: 20 }, label: { type: String, default: "" } },
+  render(h) {
+    const path = PATHS[this.name];
+    if (!path) throw new TypeError(`Unknown LiquidIcon: ${this.name}`);
+    const size = String(this.size);
+    return h("svg", { class: "liquid-icon", attrs: { ...this.$attrs, width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round", role: this.label ? "img" : void 0, "aria-label": this.label || void 0, "aria-hidden": this.label ? void 0 : "true" } }, [h("path", { attrs: { d: path } })]);
+  }
+};
+export {
+  LiquidIcon
+};
